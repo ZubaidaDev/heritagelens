@@ -2,41 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* UAE Travel Advisor Design System - Premium AI-driven travel platform
+All colors MUST be HSL for consistency and theming support.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Background & Text */
+    --background: 0 0% 98%;
+    --foreground: 20 14% 8%;
 
+    /* Card & Surface */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 20 14% 8%;
 
+    /* Popover & Overlays */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 20 14% 8%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* UAE Gold Primary */
+    --primary: 45 92% 55%;
+    --primary-foreground: 20 14% 8%;
+    --primary-hover: 45 92% 48%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Desert Sand Secondary */
+    --secondary: 35 35% 85%;
+    --secondary-foreground: 20 14% 8%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted Tones */
+    --muted: 35 20% 92%;
+    --muted-foreground: 20 8% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Teal Accent */
+    --accent: 185 84% 39%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Error States */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders & Inputs */
+    --border: 35 15% 88%;
+    --input: 35 15% 88%;
+    --ring: 45 92% 55%;
 
-    --radius: 0.5rem;
+    /* Design System Extensions */
+    --radius: 0.75rem;
+    
+    /* UAE Brand Colors */
+    --uae-gold: 45 92% 55%;
+    --uae-gold-light: 45 85% 68%;
+    --uae-gold-dark: 45 95% 42%;
+    
+    --desert-orange: 25 95% 65%;
+    --desert-red: 10 85% 58%;
+    
+    --emirates-teal: 185 84% 39%;
+    --emirates-blue: 210 95% 45%;
+    
+    --sand-beige: 35 35% 85%;
+    --warm-white: 35 25% 95%;
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(25 95% 65%) 0%, hsl(45 92% 55%) 50%, hsl(185 84% 39%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(35 25% 95%) 100%);
+    --gradient-sunset: linear-gradient(180deg, hsl(25 95% 65%) 0%, hsl(10 85% 58%) 100%);
+    --gradient-overlay: linear-gradient(180deg, transparent 0%, hsl(20 14% 8% / 0.6) 100%);
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px hsl(20 14% 8% / 0.08);
+    --shadow-card: 0 8px 30px hsl(20 14% 8% / 0.12);
+    --shadow-floating: 0 20px 40px hsl(20 14% 8% / 0.15);
+    --shadow-glow: 0 0 30px hsl(45 92% 55% / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +141,76 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer components {
+  /* Hero Button Variants */
+  .btn-hero {
+    @apply bg-gradient-to-r from-[hsl(var(--uae-gold))] to-[hsl(var(--desert-orange))] text-[hsl(var(--primary-foreground))] font-semibold px-8 py-4 rounded-xl shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-floating)] transition-[var(--transition-smooth)] hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] border-2 border-[hsl(var(--border))] font-semibold px-8 py-4 rounded-xl shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-card)] transition-[var(--transition-smooth)] hover:bg-[hsl(var(--muted))];
+  }
+
+  /* Destination Card Effects */
+  .destination-card {
+    @apply bg-[hsl(var(--card))] rounded-2xl overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-floating)] transition-[var(--transition-smooth)] hover:scale-[1.02];
+  }
+  
+  .destination-image {
+    @apply relative overflow-hidden;
+  }
+  
+  .destination-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-[hsl(var(--foreground)/0.8)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-[var(--transition-smooth)];
+  }
+
+  /* Tooltip Hover Effects */
+  .tooltip-trigger {
+    @apply relative cursor-pointer;
+  }
+  
+  .tooltip-content {
+    @apply absolute z-50 bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] p-4 rounded-xl shadow-[var(--shadow-floating)] border border-[hsl(var(--border))] text-sm max-w-xs opacity-0 invisible hover:opacity-100 hover:visible transition-[var(--transition-smooth)];
+  }
+
+  /* AI Chatbot Styles */
+  .chatbot-container {
+    @apply fixed bottom-6 right-6 z-50;
+  }
+  
+  .chatbot-bubble {
+    @apply bg-gradient-to-r from-[hsl(var(--emirates-teal))] to-[hsl(var(--emirates-blue))] text-white p-4 rounded-full shadow-[var(--shadow-floating)] hover:shadow-[var(--shadow-glow)] cursor-pointer transition-[var(--transition-smooth)] hover:scale-110;
+  }
+
+  /* Search Bar */
+  .search-bar {
+    @apply bg-[hsl(var(--card))] border border-[hsl(var(--border))] rounded-2xl px-6 py-4 shadow-[var(--shadow-soft)] focus-within:shadow-[var(--shadow-card)] focus-within:border-[hsl(var(--primary))] transition-[var(--transition-smooth)];
+  }
+
+  /* Language Switcher */
+  .lang-switcher {
+    @apply bg-[hsl(var(--muted))] rounded-xl p-1 flex items-center gap-1;
+  }
+  
+  .lang-option {
+    @apply px-4 py-2 rounded-lg text-sm font-medium transition-[var(--transition-smooth)] cursor-pointer;
+  }
+  
+  .lang-option.active {
+    @apply bg-[hsl(var(--card))] text-[hsl(var(--primary))] shadow-[var(--shadow-soft)];
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-[hsl(var(--uae-gold))] via-[hsl(var(--desert-orange))] to-[hsl(var(--emirates-teal))] bg-clip-text text-transparent;
+  }
+
+  /* Glass Effect */
+  .glass-effect {
+    @apply backdrop-blur-lg bg-[hsl(var(--card)/0.8)] border border-[hsl(var(--border)/0.5)];
   }
 }
