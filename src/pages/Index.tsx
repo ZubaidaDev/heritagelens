@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
 import { SearchSection } from '@/components/SearchSection';
-import { Features } from '@/components/Features';
 import { FeaturedDestinations } from '@/components/FeaturedDestinations';
-import { CommunityReviews } from '@/components/CommunityReviews';
 import { AIChatbot } from '@/components/AIChatbot';
 import { LoginModal } from '@/components/LoginModal';
 
@@ -24,11 +22,7 @@ const Index = () => {
       
       <SearchSection language={language} />
       
-      <Features language={language} />
-      
       <FeaturedDestinations language={language} />
-      
-      <CommunityReviews language={language} />
       
       <AIChatbot language={language} />
       

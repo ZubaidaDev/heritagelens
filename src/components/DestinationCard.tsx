@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, MapPin, Clock, DollarSign, Info, Users, Utensils, Navigation, Route } from 'lucide-react';
+import { Star, MapPin, Clock, DollarSign, Info, Users, Utensils } from 'lucide-react';
 
 interface Destination {
   id: number;
@@ -36,20 +36,16 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
     en: {
       reviews: 'reviews',
       viewDetails: 'View Details',
-      getDirections: 'Get Directions',
       aiTips: 'AI Tips',
       amenities: 'Amenities',
-      nearbyDining: 'Nearby Dining',
-      smartNav: 'Smart Navigation'
+      nearbyDining: 'Nearby Dining'
     },
     ar: {
       reviews: 'تقييم',
       viewDetails: 'عرض التفاصيل',
-      getDirections: 'الحصول على الاتجاهات',
       aiTips: 'نصائح الذكاء الاصطناعي',
       amenities: 'المرافق',
-      nearbyDining: 'المطاعم القريبة',
-      smartNav: 'الملاحة الذكية'
+      nearbyDining: 'المطاعم القريبة'
     }
   };
 
@@ -170,43 +166,10 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
           </div>
         </div>
 
-        {/* Smart Navigation */}
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <Route className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">{text[language].smartNav}</span>
-          </div>
-          <div className="flex space-x-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="flex-1 text-xs"
-              onClick={() => {
-                // Simulate smart navigation
-                const destinationQuery = encodeURIComponent(`${destination.name}, ${destination.location}, UAE`);
-                window.open(`https://maps.google.com/maps?q=${destinationQuery}`, '_blank');
-              }}
-            >
-              <Navigation className="w-3 h-3 mr-1" />
-              {text[language].getDirections}
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="sm" 
-              className="text-xs px-2"
-              title={language === 'en' ? 'Travel time estimate' : 'تقدير وقت السفر'}
-            >
-              <Clock className="w-3 h-3" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex space-x-2 mt-4">
-          <Button className="flex-1 btn-hero">
-            {text[language].viewDetails}
-          </Button>
-        </div>
+        {/* Action Button */}
+        <Button className="w-full btn-hero mt-4">
+          {text[language].viewDetails}
+        </Button>
       </div>
     </Card>
   );

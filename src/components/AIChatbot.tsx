@@ -23,27 +23,27 @@ export const AIChatbot = ({ language }: AIChatbotProps) => {
 
   const text = {
     en: {
-      title: 'AI Cultural Guide',
-      placeholder: 'Ask about UAE culture, history, traditions...',
+      title: 'AI Travel Assistant',
+      placeholder: 'Ask me anything about UAE...',
       send: 'Send',
-      welcome: 'Hello! I\'m your AI Cultural Guide for UAE. I specialize in sharing fascinating stories, cultural significance, and historical context of every site you visit. What cultural insights would you like to explore?',
+      welcome: 'Hello! I\'m your AI travel assistant for UAE. I can help you with destinations, cultural insights, travel tips, and more. What would you like to know?',
       suggestions: [
-        'Tell me about Emirati traditions',
-        'What\'s the history behind Dubai\'s gold souk?',
-        'Cultural significance of falcons in UAE',
-        'Traditional Emirati architecture features'
+        'Best time to visit Dubai?',
+        'Cultural etiquette in UAE',
+        'Must-try Emirati food',
+        'Desert safari recommendations'
       ]
     },
     ar: {
-      title: 'الدليل الثقافي الذكي',
-      placeholder: 'اسأل عن ثقافة وتاريخ وتقاليد الإمارات...',
+      title: 'مساعد السفر الذكي',
+      placeholder: 'اسألني أي شيء عن دولة الإمارات...',
       send: 'إرسال',
-      welcome: 'مرحباً! أنا دليلك الثقافي الذكي لدولة الإمارات. أتخصص في مشاركة القصص الرائعة والأهمية الثقافية والسياق التاريخي لكل موقع تزوره. ما هي الرؤى الثقافية التي تريد استكشافها؟',
+      welcome: 'مرحباً! أنا مساعدك الذكي للسفر في دولة الإمارات. يمكنني مساعدتك في الوجهات والمعلومات الثقافية ونصائح السفر والمزيد. ماذا تريد أن تعرف؟',
       suggestions: [
-        'أخبرني عن التقاليد الإماراتية',
-        'ما تاريخ سوق الذهب في دبي؟',
-        'الأهمية الثقافية للصقور في الإمارات',
-        'خصائص العمارة الإماراتية التقليدية'
+        'أفضل وقت لزيارة دبي؟',
+        'آداب الثقافة في الإمارات',
+        'الأطعمة الإماراتية التي يجب تجربتها',
+        'توصيات سفاري الصحراء'
       ]
     }
   };
@@ -51,30 +51,22 @@ export const AIChatbot = ({ language }: AIChatbotProps) => {
   const simulateAIResponse = (userMessage: string): string => {
     const responses = {
       en: {
-        default: "Fascinating question! UAE has a rich cultural tapestry woven from Bedouin traditions, pearl diving heritage, and Islamic values. Each emirate has unique cultural stories - from Dubai's transformation from fishing village to global hub, to Abu Dhabi's falcon heritage. What specific cultural aspect interests you most?",
-        traditions: "Emirati traditions are deeply rooted in Bedouin culture and Islamic values. Key traditions include Majlis (gathering councils), falconry, camel racing, and traditional arts like Al Sadu weaving. Hospitality is paramount - guests are treated with utmost respect and offered dates, coffee, and frankincense.",
-        architecture: "Traditional Emirati architecture features wind towers (Barjeel) for natural cooling, coral stone construction, and geometric Islamic patterns. Modern UAE brilliantly blends these with contemporary design - see how Burj Khalifa's Islamic geometric patterns honor tradition while reaching for the sky!",
-        history: "Dubai's Gold Souk dates back to the 1940s when traders from Iran and India established businesses. It became a crucial trading hub due to Dubai's strategic location between East and West. The souk's traditional architecture with wooden beams reflects the merchant heritage of old Dubai.",
-        culture: "UAE culture beautifully balances tradition with modernity. The falcon represents nobility, courage, and Bedouin heritage - it's even on the currency! Traditional sports include falconry, camel racing, and dhow sailing. Modern UAE celebrates 200+ nationalities while preserving Emirati identity.",
-        food: "Emirati cuisine tells stories of the sea, desert, and trade routes. Al Harees symbolizes community (cooked collectively during Ramadan), Luqaimat represents celebration sweets, and traditional coffee ceremonies show hospitality. Each dish connects to Bedouin, Persian, and Indian influences through historical trade."
+        default: "That's a great question! Based on my knowledge of UAE, I'd recommend checking out the local customs and planning your visit during the cooler months (November to March) for the best experience. Would you like specific recommendations for any particular emirate?",
+        weather: "The best time to visit UAE is from November to March when temperatures are pleasant (20-30°C). Avoid summer months (June-September) as it can get extremely hot (40-50°C). Winter is perfect for outdoor activities!",
+        culture: "UAE is a respectful and welcoming country. Dress modestly in public areas, especially at religious sites. Friday is the holy day. Tipping 10-15% is common. Arabic is official but English is widely spoken.",
+        food: "Must-try Emirati dishes include Al Harees, Machboos, Luqaimat, and Shawarma. Visit local markets like Gold Souk and spice markets. Don't miss traditional Arabic coffee and dates!"
       },
       ar: {
         default: "سؤال ممتاز! بناءً على معرفتي بدولة الإمارات، أنصح بالتحقق من العادات المحلية والتخطيط لزيارتك خلال الأشهر الباردة (نوفمبر إلى مارس) للحصول على أفضل تجربة. هل تريد توصيات محددة لأي إمارة معينة؟",
-        traditions: "التقاليد الإماراتية متجذرة عميقاً في ثقافة البدو والقيم الإسلامية. التقاليد الرئيسية تشمل المجالس، الصقارة، سباق الهجن، والفنون التقليدية مثل نسج السدو. الضيافة مقدسة - يُعامل الضيوف بأقصى درجات الاحترام ويُقدم لهم التمر والقهوة واللبان.",
-        architecture: "العمارة الإماراتية التقليدية تتميز بأبراج الرياح (البرجيل) للتبريد الطبيعي، والبناء بالحجر المرجاني، والأنماط الهندسية الإسلامية. الإمارات الحديثة تمزج هذه بذكاء مع التصميم المعاصر - انظر كيف يكرم برج خليفة الأنماط الهندسية الإسلامية بينما يصل للسماء!",
-        history: "سوق الذهب في دبي يعود إلى الأربعينيات عندما أسس التجار من إيران والهند أعمالهم. أصبح مركز تجاري مهم بسبب موقع دبي الاستراتيجي بين الشرق والغرب. عمارة السوق التقليدية بالعوارض الخشبية تعكس تراث التجار في دبي القديمة.",
-        culture: "الثقافة الإماراتية تتوازن بشكل جميل بين التقليد والحداثة. الصقر يرمز للنبل والشجاعة والتراث البدوي - حتى أنه على العملة! الرياضات التقليدية تشمل الصقارة وسباق الهجن وسباق القوارب الشراعية. الإمارات الحديثة تحتفل بأكثر من 200 جنسية مع الحفاظ على الهوية الإماراتية.",
-        food: "المطبخ الإماراتي يحكي قصص البحر والصحراء وطرق التجارة. الهريس يرمز للمجتمع (يُطبخ جماعياً في رمضان)، واللقيمات تمثل حلويات الاحتفال، وطقوس القهوة التقليدية تظهر الضيافة. كل طبق يتصل بتأثيرات البدو والفارسية والهندية من خلال التجارة التاريخية."
+        weather: "أفضل وقت لزيارة الإمارات من نوفمبر إلى مارس عندما تكون درجات الحرارة لطيفة (20-30 درجة). تجنب أشهر الصيف (يونيو-سبتمبر) حيث يمكن أن تصبح حارة جداً (40-50 درجة). الشتاء مثالي للأنشطة الخارجية!",
+        culture: "الإمارات دولة محترمة ومرحبة. البس بتواضع في الأماكن العامة، خاصة في المواقع الدينية. الجمعة هو اليوم المقدس. الإكرامية 10-15% شائعة. العربية رسمية لكن الإنجليزية منتشرة.",
+        food: "الأطباق الإماراتية التي يجب تجربتها تشمل الهريس والمجبوس واللقيمات والشاورما. زيارة الأسواق المحلية مثل سوق الذهب وأسواق البهارات. لا تفوت القهوة العربية التقليدية والتمر!"
       }
     };
 
     const message = userMessage.toLowerCase();
-    if (message.includes('tradition') || message.includes('التقاليد') || message.includes('bedouin') || message.includes('البدو')) {
-      return responses[language].traditions;
-    } else if (message.includes('architecture') || message.includes('العمارة') || message.includes('building') || message.includes('مبنى')) {
-      return responses[language].architecture;
-    } else if (message.includes('history') || message.includes('التاريخ') || message.includes('gold souk') || message.includes('سوق الذهب')) {
-      return responses[language].history;
+    if (message.includes('weather') || message.includes('time') || message.includes('الطقس') || message.includes('وقت')) {
+      return responses[language].weather;
     } else if (message.includes('culture') || message.includes('custom') || message.includes('الثقافة') || message.includes('العادات')) {
       return responses[language].culture;
     } else if (message.includes('food') || message.includes('eat') || message.includes('الطعام') || message.includes('أكل')) {
