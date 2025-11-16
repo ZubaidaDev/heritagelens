@@ -45,6 +45,7 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
       destinations: 'Destinations',
       experiences: 'Experiences', 
       reviews: 'Reviews',
+      journal: 'My Journal',
       login: 'Login',
       logout: 'Logout'
     },
@@ -52,7 +53,8 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
       brand: 'عدسة التراث',
       destinations: 'الوجهات',
       experiences: 'التجارب',
-      reviews: 'التقييمات', 
+      reviews: 'التقييمات',
+      journal: 'يومياتي',
       login: 'تسجيل الدخول',
       logout: 'تسجيل الخروج'
     }
@@ -82,6 +84,9 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
             </a>
             <a href="#reviews" className="text-foreground hover:text-primary transition-colors font-medium">
               {text[language].reviews}
+            </a>
+            <a href="#journal" className="text-foreground hover:text-primary transition-colors font-medium">
+              {text[language].journal}
             </a>
           </div>
 
