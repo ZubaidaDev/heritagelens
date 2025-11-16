@@ -27,6 +27,8 @@ const DestinationDetails = () => {
   const destination = location.state?.destination;
   const [details, setDetails] = useState<DestinationDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [realRating, setRealRating] = useState<number>(0);
+  const [realReviewCount, setRealReviewCount] = useState<number>(0);
 
   useEffect(() => {
     if (!destination) {
@@ -59,7 +61,45 @@ const DestinationDetails = () => {
       }
     };
 
+    const fetchReviewStats = async () => {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('rating')
+        .eq('destination', destination.name);
+
+      if (!error && data) {
+        setRealReviewCount(data.length);
+        if (data.length > 0) {
+          const avgRating = data.reduce((sum, review) => sum + review.rating, 0) / data.length;
+          setRealRating(Math.round(avgRating * 10) / 10);
+        } else {
+          setRealRating(0);
+        }
+      }
+    };
+
     fetchDetails();
+    fetchReviewStats();
+
+    // Set up realtime subscription for reviews
+    const channel = supabase
+      .channel('reviews-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'reviews'
+        },
+        () => {
+          fetchReviewStats();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [destination, navigate, toast]);
 
   if (!destination) return null;
@@ -96,8 +136,12 @@ const DestinationDetails = () => {
               </div>
               <div className="flex items-center space-x-1">
                 <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                <span className="font-semibold">{destination.rating}</span>
-                <span>({destination.reviews.toLocaleString()} reviews)</span>
+                <span className="font-semibold">
+                  {realReviewCount > 0 ? realRating : 'No rating'}
+                </span>
+                <span>
+                  ({realReviewCount > 0 ? `${realReviewCount.toLocaleString()} reviews` : 'Be the first to review'})
+                </span>
               </div>
             </div>
           </div>

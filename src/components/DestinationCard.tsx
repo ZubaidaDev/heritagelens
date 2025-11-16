@@ -208,16 +208,11 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
             <span className="text-sm font-medium">{text[language].amenities}</span>
           </div>
           <div className="flex flex-wrap gap-2">
-            {destination.amenities.slice(0, 3).map((amenity, index) => (
+            {destination.amenities.map((amenity, index) => (
               <Badge key={index} variant="secondary" className="text-xs">
                 {amenity}
               </Badge>
             ))}
-            {destination.amenities.length > 3 && (
-              <Badge variant="outline" className="text-xs">
-                +{destination.amenities.length - 3} more
-              </Badge>
-            )}
           </div>
         </div>
 
