@@ -4,13 +4,14 @@ import { HeroSection } from '@/components/HeroSection';
 import { SearchSection } from '@/components/SearchSection';
 import { FeaturedDestinations } from '@/components/FeaturedDestinations';
 import { AIChatbot } from '@/components/AIChatbot';
+import { Footer } from '@/components/Footer';
 
 const Index = () => {
   const [language, setLanguage] = useState<'en' | 'ar'>('en');
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation 
         language={language}
         onLanguageChange={setLanguage}
@@ -29,6 +30,8 @@ const Index = () => {
       />
       
       <AIChatbot language={language} />
+      
+      <Footer />
     </div>
   );
 };

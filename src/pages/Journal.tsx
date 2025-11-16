@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
+import { Footer } from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import { Session } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
@@ -517,6 +518,8 @@ export default function Journal() {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
     </>
   );

@@ -167,15 +167,9 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
             {destination.name}
           </h3>
           
-          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-1">
-              <MapPin className="w-4 h-4" />
-              <span>{destination.location}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Clock className="w-4 h-4" />
-              <span>{destination.duration}</span>
-            </div>
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <MapPin className="w-4 h-4" />
+            <span>{destination.location}</span>
           </div>
 
           {/* Rating */}
