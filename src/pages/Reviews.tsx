@@ -4,7 +4,6 @@ import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -13,6 +12,8 @@ import { Session } from '@supabase/supabase-js';
 import { toast } from 'sonner';
 import { Star, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
+import { DESTINATION_NAMES } from '@/data/destinations';
+import { Input } from '@/components/ui/input';
 
 interface Review {
   id: string;
@@ -34,6 +35,9 @@ export default function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [destination, setDestination] = useState('');
+  const [destinationInput, setDestinationInput] = useState('');
+  const [filteredDestinations, setFilteredDestinations] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [rating, setRating] = useState('5');
   const [comment, setComment] = useState('');
   const [visitDate, setVisitDate] = useState('');
@@ -77,6 +81,29 @@ export default function Reviews() {
     }
   };
 
+  const handleDestinationInputChange = (value: string) => {
+    setDestinationInput(value);
+    setDestination('');
+    
+    if (value.trim()) {
+      const filtered = DESTINATION_NAMES.filter(dest => 
+        dest.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredDestinations(filtered);
+      setShowSuggestions(true);
+    } else {
+      setFilteredDestinations([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSelectDestination = (dest: string) => {
+    setDestination(dest);
+    setDestinationInput(dest);
+    setShowSuggestions(false);
+    setFilteredDestinations([]);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -87,6 +114,12 @@ export default function Reviews() {
 
     if (!destination || !comment) {
       toast.error('Please fill in all required fields');
+      return;
+    }
+
+    // Validate destination is from the predefined list
+    if (!DESTINATION_NAMES.includes(destination as any)) {
+      toast.error('Please select a valid destination from the list');
       return;
     }
 
@@ -104,6 +137,7 @@ export default function Reviews() {
 
       toast.success('Review submitted successfully!');
       setDestination('');
+      setDestinationInput('');
       setRating('5');
       setComment('');
       setVisitDate('');
@@ -160,15 +194,47 @@ export default function Reviews() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
+                <div className="relative">
                   <Label htmlFor="destination">{text[language].destination}</Label>
                   <Input
                     id="destination"
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    placeholder="e.g., Burj Khalifa"
+                    value={destinationInput}
+                    onChange={(e) => handleDestinationInputChange(e.target.value)}
+                    onFocus={() => {
+                      if (destinationInput.trim()) {
+                        setShowSuggestions(true);
+                      }
+                    }}
+                    onBlur={() => {
+                      // Delay to allow click on suggestion
+                      setTimeout(() => setShowSuggestions(false), 200);
+                    }}
+                    placeholder={language === 'en' ? "Type to search destinations..." : "اكتب للبحث عن الوجهات..."}
                     required
+                    dir={isRTL ? 'rtl' : 'ltr'}
+                    autoComplete="off"
                   />
+                  {showSuggestions && filteredDestinations.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-background border border-border rounded-md shadow-lg max-h-60 overflow-auto">
+                      {filteredDestinations.map((dest) => (
+                        <button
+                          key={dest}
+                          type="button"
+                          onClick={() => handleSelectDestination(dest)}
+                          className="w-full text-left px-4 py-2 hover:bg-muted transition-colors text-foreground"
+                        >
+                          {dest}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {destinationInput && filteredDestinations.length === 0 && showSuggestions && (
+                    <p className="text-sm text-destructive mt-1">
+                      {language === 'en' 
+                        ? 'No matching destinations found. Please select from available destinations.' 
+                        : 'لم يتم العثور على وجهات مطابقة. يرجى الاختيار من الوجهات المتاحة.'}
+                    </p>
+                  )}
                 </div>
 
                 <div>
