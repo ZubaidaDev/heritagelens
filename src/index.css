@@ -8,72 +8,72 @@ All colors MUST be HSL for consistency and theming support.
 
 @layer base {
   :root {
-    /* Core Background & Text */
-    --background: 0 0% 98%;
-    --foreground: 20 14% 8%;
+    /* Core Background & Text - Refined Professional Palette */
+    --background: 40 15% 97%;
+    --foreground: 30 8% 15%;
 
     /* Card & Surface */
     --card: 0 0% 100%;
-    --card-foreground: 20 14% 8%;
+    --card-foreground: 30 8% 15%;
 
     /* Popover & Overlays */
     --popover: 0 0% 100%;
-    --popover-foreground: 20 14% 8%;
+    --popover-foreground: 30 8% 15%;
 
-    /* UAE Gold Primary */
-    --primary: 45 92% 55%;
-    --primary-foreground: 20 14% 8%;
-    --primary-hover: 45 92% 48%;
+    /* Sophisticated Gold Primary */
+    --primary: 38 75% 48%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 38 75% 42%;
 
-    /* Desert Sand Secondary */
-    --secondary: 35 35% 85%;
-    --secondary-foreground: 20 14% 8%;
+    /* Warm Neutral Secondary */
+    --secondary: 35 20% 88%;
+    --secondary-foreground: 30 8% 15%;
 
     /* Muted Tones */
-    --muted: 35 20% 92%;
-    --muted-foreground: 20 8% 45%;
+    --muted: 35 12% 92%;
+    --muted-foreground: 30 6% 42%;
 
-    /* Teal Accent */
-    --accent: 185 84% 39%;
-    --accent-foreground: 0 0% 98%;
+    /* Deep Teal Accent */
+    --accent: 180 45% 35%;
+    --accent-foreground: 0 0% 100%;
 
     /* Error States */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
     /* Borders & Inputs */
-    --border: 35 15% 88%;
-    --input: 35 15% 88%;
-    --ring: 45 92% 55%;
+    --border: 35 10% 85%;
+    --input: 35 10% 90%;
+    --ring: 38 75% 48%;
 
     /* Design System Extensions */
     --radius: 0.75rem;
     
-    /* UAE Brand Colors */
-    --uae-gold: 45 92% 55%;
-    --uae-gold-light: 45 85% 68%;
-    --uae-gold-dark: 45 95% 42%;
+    /* UAE Brand Colors - Refined */
+    --uae-gold: 38 75% 48%;
+    --uae-gold-light: 40 70% 62%;
+    --uae-gold-dark: 36 80% 38%;
     
-    --desert-orange: 25 95% 65%;
-    --desert-red: 10 85% 58%;
+    --desert-orange: 28 85% 58%;
+    --desert-red: 12 75% 52%;
     
-    --emirates-teal: 185 84% 39%;
-    --emirates-blue: 210 95% 45%;
+    --emirates-teal: 180 45% 35%;
+    --emirates-blue: 210 70% 42%;
     
-    --sand-beige: 35 35% 85%;
-    --warm-white: 35 25% 95%;
+    --sand-beige: 35 20% 88%;
+    --warm-white: 40 15% 97%;
     
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(25 95% 65%) 0%, hsl(45 92% 55%) 50%, hsl(185 84% 39%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(35 25% 95%) 100%);
-    --gradient-sunset: linear-gradient(180deg, hsl(25 95% 65%) 0%, hsl(10 85% 58%) 100%);
-    --gradient-overlay: linear-gradient(180deg, transparent 0%, hsl(20 14% 8% / 0.6) 100%);
+    /* Professional Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(180 45% 35%) 0%, hsl(38 75% 48%) 50%, hsl(28 85% 58%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(40 15% 97%) 100%);
+    --gradient-sunset: linear-gradient(180deg, hsl(38 75% 48%) 0%, hsl(28 85% 58%) 100%);
+    --gradient-overlay: linear-gradient(180deg, transparent 0%, hsl(30 8% 15% / 0.7) 100%);
     
-    /* Shadows */
-    --shadow-soft: 0 4px 20px hsl(20 14% 8% / 0.08);
-    --shadow-card: 0 8px 30px hsl(20 14% 8% / 0.12);
-    --shadow-floating: 0 20px 40px hsl(20 14% 8% / 0.15);
-    --shadow-glow: 0 0 30px hsl(45 92% 55% / 0.3);
+    /* Refined Shadows */
+    --shadow-soft: 0 2px 12px hsl(30 8% 15% / 0.06);
+    --shadow-card: 0 4px 20px hsl(30 8% 15% / 0.08);
+    --shadow-floating: 0 12px 32px hsl(30 8% 15% / 0.12);
+    --shadow-glow: 0 0 24px hsl(38 75% 48% / 0.25);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -141,7 +141,16 @@ All colors MUST be HSL for consistency and theming support.
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    letter-spacing: -0.01em;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 }
 
