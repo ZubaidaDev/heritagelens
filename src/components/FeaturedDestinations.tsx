@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { DestinationCard } from './DestinationCard';
+import { supabase } from '@/integrations/supabase/client';
 import alJahiliFort from '@/assets/al-jahili-fort.jpg';
 import alBidyaMosque from '@/assets/al-bidya-mosque.jpg';
 import hattaHeritage from '@/assets/hatta-heritage.jpg';
@@ -14,14 +16,69 @@ interface FeaturedDestinationsProps {
 }
 
 export const FeaturedDestinations = ({ language, searchQuery = '' }: FeaturedDestinationsProps) => {
+  const [userId, setUserId] = useState<string | null>(null);
+  const [recommendedDestinations, setRecommendedDestinations] = useState<string[]>([]);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserId(session?.user?.id || null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserId(session?.user?.id || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchPersonalizedRecommendations = async () => {
+      try {
+        // Get destinations from user's reviews
+        const { data: reviews } = await supabase
+          .from('reviews')
+          .select('destination')
+          .eq('user_id', userId);
+
+        // Get locations from user's journals
+        const { data: journals } = await supabase
+          .from('journals')
+          .select('location')
+          .eq('user_id', userId);
+
+        const userDestinations = new Set<string>();
+        
+        reviews?.forEach(r => {
+          if (r.destination) userDestinations.add(r.destination);
+        });
+        
+        journals?.forEach(j => {
+          if (j.location) userDestinations.add(j.location);
+        });
+
+        setRecommendedDestinations(Array.from(userDestinations));
+      } catch (error) {
+        console.error('Error fetching personalized recommendations:', error);
+      }
+    };
+
+    fetchPersonalizedRecommendations();
+  }, [userId]);
+
   const text = {
     en: {
       title: 'Featured Destinations',
-      subtitle: 'Discover cultural attractions in UAE'
+      subtitle: 'Discover cultural attractions in UAE',
+      recommendedTitle: 'Recommended For You',
+      recommendedSubtitle: 'Based on your reviews and journals'
     },
     ar: {
       title: 'الوجهات المميزة',
-      subtitle: 'اكتشف المعالم الثقافية في دولة الإمارات'
+      subtitle: 'اكتشف المعالم الثقافية في دولة الإمارات',
+      recommendedTitle: 'موصى بها لك',
+      recommendedSubtitle: 'بناءً على تقييماتك ومذكراتك'
     }
   };
 
@@ -478,6 +535,38 @@ export const FeaturedDestinations = ({ language, searchQuery = '' }: FeaturedDes
   return (
     <section id="destinations" className={`py-20 bg-background ${isRTL ? 'rtl' : ''}`}>
       <div className="container mx-auto px-6">
+        {/* Personalized Recommendations */}
+        {userId && recommendedDestinations.length > 0 && (
+          <div className="mb-16">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-2 gradient-text">
+                {text[language].recommendedTitle}
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                {text[language].recommendedSubtitle}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
+              {destinations[language]
+                .filter(dest => recommendedDestinations.some(rec => 
+                  dest.name.includes(rec) || rec.includes(dest.name)
+                ))
+                .slice(0, 3)
+                .map((destination, index) => (
+                  <div
+                    key={`recommended-${destination.id}`}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <DestinationCard destination={destination} language={language} />
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* Main Featured Destinations */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 gradient-text">
             {text[language].title}
