@@ -13,6 +13,7 @@ import { ArrowLeft, Clock, DollarSign, MapPin, Star, Info, Users, Calendar, Shie
 import { useToast } from '@/hooks/use-toast';
 import type { Session } from '@supabase/supabase-js';
 import { DESTINATION_NAMES } from '@/data/destinations';
+import { getGoogleMapsUrl } from '@/data/destinationCoordinates';
 
 interface DestinationDetails {
   openingHours: string;
@@ -408,8 +409,8 @@ const DestinationDetails = () => {
             <Button 
               className="w-full btn-hero"
               onClick={() => {
-                const query = encodeURIComponent(`${destination.name}, ${destination.location}`);
-                window.open(`https://maps.google.com/maps?q=${query}`, '_blank');
+                const mapsUrl = getGoogleMapsUrl(destination.name);
+                window.open(mapsUrl, '_blank');
               }}
             >
               <MapPin className="w-4 h-4 mr-2" />

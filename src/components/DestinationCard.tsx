@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Star, MapPin, Clock, DollarSign, Info, Users, Utensils } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getGoogleMapsUrl } from '@/data/destinationCoordinates';
 
 interface Destination {
   id: number;
@@ -106,8 +107,8 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
   };
 
   const handleGetDirections = () => {
-    const query = encodeURIComponent(`${destination.name}, ${destination.location}`);
-    window.open(`https://maps.google.com/maps?q=${query}`, '_blank');
+    const mapsUrl = getGoogleMapsUrl(destination.name);
+    window.open(mapsUrl, '_blank');
   };
 
   const handleViewDetails = () => {
