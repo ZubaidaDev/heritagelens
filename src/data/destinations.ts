@@ -11,7 +11,17 @@ export const DESTINATION_NAMES = [
   'Al Ain Oasis',
   'Umm Al Quwain Old Town',
   'Jebel Hafeet',
-  'Kalba Corniche & Mangroves'
+  'Kalba Corniche & Mangroves',
+  'Fujairah Fort',
+  'Dhayah Fort',
+  'Al Qasimi Palace Museum',
+  'Heritage House Sharjah',
+  'Ajman Museum',
+  'Bait Al Naboodah',
+  'Al Mureijah Art District',
+  'Al Ain Palace Museum',
+  'Qattara Arts Centre',
+  'Jumeirah Archaeological Site'
 ] as const;
 
 export type DestinationName = typeof DESTINATION_NAMES[number];
