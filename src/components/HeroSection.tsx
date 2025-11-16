@@ -44,7 +44,7 @@ export const HeroSection = ({ language }: HeroSectionProps) => {
           {text[language].title}
         </h1>
         
-        <p className="text-xl md:text-2xl text-primary font-semibold mb-4">
+        <p className="text-xl md:text-2xl text-white font-semibold mb-4">
           {text[language].subtitle}
         </p>
         
