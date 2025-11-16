@@ -39,7 +39,7 @@ export const HeroSection = ({ language }: HeroSectionProps) => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6 animate-fade-in">
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-6 pt-24 animate-fade-in">
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
           {text[language].title}
         </h1>
