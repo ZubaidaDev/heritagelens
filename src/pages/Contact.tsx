@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
+import { AIChatbot } from '@/components/AIChatbot';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -18,6 +19,7 @@ const contactSchema = z.object({
 });
 
 export default function Contact() {
+  const [language, setLanguage] = useState<'en' | 'ar'>('en');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
@@ -60,7 +62,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Navigation language="en" onLanguageChange={() => {}} />
+      <Navigation language={language} onLanguageChange={setLanguage} />
       
       <div className="container mx-auto px-4 py-12 flex-1">
         {/* Header */}
@@ -213,6 +215,7 @@ export default function Contact() {
         </div>
       </div>
 
+      <AIChatbot language={language} />
       <Footer />
     </div>
   );

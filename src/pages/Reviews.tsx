@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
+import { AIChatbot } from '@/components/AIChatbot';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -339,7 +340,8 @@ export default function Reviews() {
           )}
         </div>
       </main>
-      
+
+      <AIChatbot language={language} />
       <Footer />
     </div>
   );
