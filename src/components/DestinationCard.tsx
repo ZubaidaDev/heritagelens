@@ -56,6 +56,10 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
     window.open(`https://maps.google.com/maps?q=${query}`, '_blank');
   };
 
+  const handleViewDetails = () => {
+    window.location.href = `/destination/${destination.id}`;
+  };
+
   return (
     <Card className="destination-card group overflow-hidden">
       {/* Image Section with Hover Tooltip */}
@@ -179,7 +183,7 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
             <MapPin className="w-4 h-4 mr-2" />
             {text[language].getDirections}
           </Button>
-          <Button className="flex-1" variant="outline">
+          <Button className="flex-1" variant="outline" onClick={handleViewDetails}>
             {text[language].viewDetails}
           </Button>
         </div>
