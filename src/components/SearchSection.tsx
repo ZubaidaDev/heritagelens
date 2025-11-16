@@ -69,39 +69,6 @@ export const SearchSection = ({ language }: SearchSectionProps) => {
               ))}
             </div>
           </div>
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-3">
-                <MapPin className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-primary">200+</h3>
-              <p className="text-muted-foreground">
-                {language === 'en' ? 'Destinations' : 'وجهة'}
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Star className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-primary">50K+</h3>
-              <p className="text-muted-foreground">
-                {language === 'en' ? 'Reviews' : 'تقييم'}
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Clock className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-primary">24/7</h3>
-              <p className="text-muted-foreground">
-                {language === 'en' ? 'AI Support' : 'دعم الذكاء الاصطناعي'}
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
