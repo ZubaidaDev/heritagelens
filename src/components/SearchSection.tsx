@@ -16,7 +16,6 @@ export const SearchSection = ({ language, onSearch }: SearchSectionProps) => {
   const searchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // All available destinations for search
   const allDestinations = [
     'Al Jahili Fort',
     'Al Bidya Mosque',
@@ -25,7 +24,11 @@ export const SearchSection = ({ language, onSearch }: SearchSectionProps) => {
     'Qasr Al Hosn',
     'Sheikh Zayed Grand Mosque',
     'Mleiha Archaeological Centre',
-    'Sharjah Heritage Area'
+    'Sharjah Heritage Area',
+    'Al Ain Oasis',
+    'Umm Al Quwain Old Town',
+    'Jebel Hafeet',
+    'Kalba Corniche & Mangroves'
   ];
 
   const allDestinationsAr = [
@@ -36,7 +39,11 @@ export const SearchSection = ({ language, onSearch }: SearchSectionProps) => {
     'قصر الحصن',
     'مسجد الشيخ زايد الكبير',
     'مركز مليحة الأثري',
-    'منطقة الشارقة التراثية'
+    'منطقة الشارقة التراثية',
+    'واحة العين',
+    'البلدة القديمة في أم القيوين',
+    'جبل حفيت',
+    'كورنيش كلباء والمنغروف'
   ];
 
   const destinations = language === 'en' ? allDestinations : allDestinationsAr;

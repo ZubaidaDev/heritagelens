@@ -170,6 +170,78 @@ export const FeaturedDestinations = ({ language, searchQuery = '' }: FeaturedDes
           { name: 'Al Fanar Restaurant', cuisine: 'Emirati', distance: '500m' },
           { name: 'Shababeek Restaurant', cuisine: 'Traditional', distance: '300m' }
         ]
+      },
+      {
+        id: 9,
+        name: 'Al Ain Oasis',
+        location: 'Al Ain, Abu Dhabi',
+        image: hattaHeritage,
+        rating: 4.7,
+        reviews: 3421,
+        duration: '2-3 hours',
+        price: 'Free',
+        category: 'UNESCO Heritage Site',
+        description: 'Ancient oasis with 147,000 date palms fed by traditional falaj irrigation system. UNESCO World Heritage Site showcasing 4,000 years of agricultural tradition. Peaceful shaded walkways through historic palm groves.',
+        aiTip: 'Visit early morning for best light and cooler temperatures. Free guided tours available. Eco-Centre provides insights into falaj system. Wear comfortable walking shoes.',
+        amenities: ['Free Entry', 'Eco Centre', 'Walking Trails', 'Shaded Paths', 'Heritage Site'],
+        nearbyRestaurants: [
+          { name: 'Min Zaman', cuisine: 'Traditional Emirati', distance: '2 km' },
+          { name: 'Al Diwan Restaurant', cuisine: 'Arabic', distance: '1.8 km' }
+        ]
+      },
+      {
+        id: 10,
+        name: 'Umm Al Quwain Old Town',
+        location: 'Umm Al Quwain',
+        image: alFahidi,
+        rating: 4.3,
+        reviews: 654,
+        duration: '2-4 hours',
+        price: 'Free',
+        category: 'Historic Town',
+        description: 'Undiscovered gem with traditional coral stone houses, old fort, and dhow-building yards. Experience authentic UAE away from tourist crowds. Historic fort offers panoramic views of the creek.',
+        aiTip: 'Perfect for photography enthusiasts. Visit dhow yards to see traditional boat building. Old souq still operates with local crafts. Best visited October to March.',
+        amenities: ['Historic Fort', 'Traditional Souq', 'Dhow Yards', 'Free Parking', 'Scenic Views'],
+        nearbyRestaurants: [
+          { name: 'Umm Al Quwain Fort Restaurant', cuisine: 'Local', distance: '500m' },
+          { name: 'Creek Side Café', cuisine: 'Seafood', distance: '300m' }
+        ]
+      },
+      {
+        id: 11,
+        name: 'Jebel Hafeet',
+        location: 'Al Ain, Abu Dhabi',
+        image: desertSafari,
+        rating: 4.8,
+        reviews: 5234,
+        duration: '3-4 hours',
+        price: 'Free',
+        category: 'Natural Landmark',
+        description: 'UAE\'s second highest peak at 1,240 meters with stunning mountain road featuring 60 turns. Ancient beehive tombs at base dating back 5,000 years. Spectacular sunrise and sunset views.',
+        aiTip: 'Drive up early morning or evening for best temperatures. Mercure Hotel at summit offers refreshments. Visit Bronze Age tombs at foothills. Bring water and camera.',
+        amenities: ['Scenic Drive', 'Archaeological Sites', 'Mountain Hotel', 'Viewpoints', 'Free Access'],
+        nearbyRestaurants: [
+          { name: 'Mercure Grand Jebel Hafeet', cuisine: 'International', distance: 'At Summit' },
+          { name: 'Green Mubazzarah Café', cuisine: 'Café', distance: 'At Base' }
+        ]
+      },
+      {
+        id: 12,
+        name: 'Kalba Corniche & Mangroves',
+        location: 'Kalba, Sharjah',
+        image: alBidyaMosque,
+        rating: 4.5,
+        reviews: 1876,
+        duration: '2-3 hours',
+        price: 'AED 20 (Kayak)',
+        category: 'Natural Reserve',
+        description: 'Oldest mangrove forest in Arabia, home to rare white collared kingfisher. Kayak through peaceful waterways rich with marine life. Khor Kalba Conservation Reserve protects diverse ecosystems.',
+        aiTip: 'Morning kayaking offers best wildlife spotting. Bring binoculars for birdwatching. Guided eco-tours available. Wear sun protection and water shoes.',
+        amenities: ['Kayak Rentals', 'Bird Watching', 'Eco Tours', 'Visitor Center', 'Beach Access'],
+        nearbyRestaurants: [
+          { name: 'Kalba Beach Restaurant', cuisine: 'Seafood', distance: '1 km' },
+          { name: 'Mangrove Café', cuisine: 'International', distance: '500m' }
+        ]
       }
     ],
     ar: [
@@ -315,6 +387,78 @@ export const FeaturedDestinations = ({ language, searchQuery = '' }: FeaturedDes
         nearbyRestaurants: [
           { name: 'مطعم الفنر', cuisine: 'إماراتي', distance: '٥٠٠ م' },
           { name: 'مطعم شبابيك', cuisine: 'تقليدي', distance: '٣٠٠ م' }
+        ]
+      },
+      {
+        id: 9,
+        name: 'واحة العين',
+        location: 'العين، أبوظبي',
+        image: hattaHeritage,
+        rating: 4.7,
+        reviews: 3421,
+        duration: '٢-٣ ساعات',
+        price: 'مجاني',
+        category: 'موقع تراث عالمي',
+        description: 'واحة قديمة تضم ١٤٧,٠٠٠ نخلة تروى بنظام الفلج التقليدي. موقع تراث عالمي لليونسكو يعرض ٤,٠٠٠ سنة من التقاليد الزراعية. ممرات مظللة هادئة عبر بساتين النخيل التاريخية.',
+        aiTip: 'قم بالزيارة في الصباح الباكر للإضاءة الأفضل ودرجات حرارة أبرد. جولات مرشدة مجانية متاحة. المركز البيئي يوفر رؤى حول نظام الفلج. ارتدِ أحذية مشي مريحة.',
+        amenities: ['دخول مجاني', 'مركز بيئي', 'مسارات مشي', 'ممرات مظللة', 'موقع تراثي'],
+        nearbyRestaurants: [
+          { name: 'من زمان', cuisine: 'إماراتي تقليدي', distance: '٢ كم' },
+          { name: 'مطعم الديوان', cuisine: 'عربي', distance: '١.٨ كم' }
+        ]
+      },
+      {
+        id: 10,
+        name: 'البلدة القديمة في أم القيوين',
+        location: 'أم القيوين',
+        image: alFahidi,
+        rating: 4.3,
+        reviews: 654,
+        duration: '٢-٤ ساعات',
+        price: 'مجاني',
+        category: 'بلدة تاريخية',
+        description: 'جوهرة غير مكتشفة مع بيوت حجرية مرجانية تقليدية، قلعة قديمة، وأحواض بناء الداو. جرب الإمارات الأصيلة بعيداً عن حشود السياح. القلعة التاريخية توفر إطلالات بانورامية على الخور.',
+        aiTip: 'مثالي لعشاق التصوير. قم بزيارة أحواض الداو لرؤية بناء القوارب التقليدية. السوق القديم لا يزال يعمل مع الحرف المحلية. أفضل زيارة من أكتوبر إلى مارس.',
+        amenities: ['قلعة تاريخية', 'سوق تقليدي', 'أحواض الداو', 'موقف مجاني', 'مناظر خلابة'],
+        nearbyRestaurants: [
+          { name: 'مطعم قلعة أم القيوين', cuisine: 'محلي', distance: '٥٠٠ م' },
+          { name: 'مقهى جانب الخور', cuisine: 'مأكولات بحرية', distance: '٣٠٠ م' }
+        ]
+      },
+      {
+        id: 11,
+        name: 'جبل حفيت',
+        location: 'العين، أبوظبي',
+        image: desertSafari,
+        rating: 4.8,
+        reviews: 5234,
+        duration: '٣-٤ ساعات',
+        price: 'مجاني',
+        category: 'معلم طبيعي',
+        description: 'ثاني أعلى قمة في الإمارات بارتفاع ١,٢٤٠ متر مع طريق جبلي مذهل يحتوي على ٦٠ منعطف. مقابر خلية النحل القديمة في القاعدة يعود تاريخها إلى ٥,٠٠٠ سنة. مناظر شروق وغروب رائعة.',
+        aiTip: 'قُد السيارة في الصباح الباكر أو المساء لأفضل درجات الحرارة. فندق ميركيور في القمة يقدم المرطبات. قم بزيارة مقابر العصر البرونزي عند السفوح. أحضر الماء والكاميرا.',
+        amenities: ['قيادة خلابة', 'مواقع أثرية', 'فندق جبلي', 'نقاط مراقبة', 'دخول مجاني'],
+        nearbyRestaurants: [
+          { name: 'ميركيور جراند جبل حفيت', cuisine: 'عالمي', distance: 'في القمة' },
+          { name: 'مقهى جرين مبزرة', cuisine: 'مقهى', distance: 'في القاعدة' }
+        ]
+      },
+      {
+        id: 12,
+        name: 'كورنيش كلباء والمنغروف',
+        location: 'كلباء، الشارقة',
+        image: alBidyaMosque,
+        rating: 4.5,
+        reviews: 1876,
+        duration: '٢-٣ ساعات',
+        price: '٢٠ درهم (كاياك)',
+        category: 'محمية طبيعية',
+        description: 'أقدم غابة منغروف في الجزيرة العربية، موطن صياد السمك أبيض الطوق النادر. اركب الكاياك عبر الممرات المائية الهادئة الغنية بالحياة البحرية. محمية خور كلباء تحمي النظم البيئية المتنوعة.',
+        aiTip: 'ركوب الكاياك الصباحي يوفر أفضل فرص رؤية الحياة البرية. أحضر منظار لمراقبة الطيور. جولات بيئية مرشدة متاحة. ارتدِ واقي شمس وأحذية مائية.',
+        amenities: ['إيجار كاياك', 'مراقبة الطيور', 'جولات بيئية', 'مركز زوار', 'شاطئ'],
+        nearbyRestaurants: [
+          { name: 'مطعم شاطئ كلباء', cuisine: 'مأكولات بحرية', distance: '١ كم' },
+          { name: 'مقهى المنغروف', cuisine: 'عالمي', distance: '٥٠٠ م' }
         ]
       }
     ]
