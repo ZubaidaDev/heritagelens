@@ -43,7 +43,6 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
     en: {
       brand: 'HeritageLens',
       destinations: 'Destinations',
-      experiences: 'Experiences', 
       reviews: 'Reviews',
       journal: 'My Journal',
       login: 'Login',
@@ -52,7 +51,6 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
     ar: {
       brand: 'عدسة التراث',
       destinations: 'الوجهات',
-      experiences: 'التجارب',
       reviews: 'التقييمات',
       journal: 'يومياتي',
       login: 'تسجيل الدخول',
@@ -78,9 +76,6 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
           <div className="hidden md:flex items-center space-x-8">
             <a href="#destinations" className="text-foreground hover:text-primary transition-colors font-medium">
               {text[language].destinations}
-            </a>
-            <a href="#experiences" className="text-foreground hover:text-primary transition-colors font-medium">
-              {text[language].experiences}
             </a>
             <a href="#reviews" className="text-foreground hover:text-primary transition-colors font-medium">
               {text[language].reviews}
