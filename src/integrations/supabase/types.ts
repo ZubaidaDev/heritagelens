@@ -14,7 +14,68 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      journal_photos: {
+        Row: {
+          created_at: string
+          id: string
+          journal_id: string
+          photo_url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          journal_id: string
+          photo_url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          journal_id?: string
+          photo_url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_photos_journal_id_fkey"
+            columns: ["journal_id"]
+            isOneToOne: false
+            referencedRelation: "journals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journals: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          location: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          visit_date: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          visit_date?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          visit_date?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

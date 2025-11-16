@@ -80,7 +80,7 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
             <a href="#reviews" className="text-foreground hover:text-primary transition-colors font-medium">
               {text[language].reviews}
             </a>
-            <a href="#journal" className="text-foreground hover:text-primary transition-colors font-medium">
+            <a href="/journal" className="text-foreground hover:text-primary transition-colors font-medium">
               {text[language].journal}
             </a>
           </div>
