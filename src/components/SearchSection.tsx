@@ -15,13 +15,13 @@ export const SearchSection = ({ language }: SearchSectionProps) => {
       title: 'Where would you like to explore?',
       placeholder: 'Search destinations, experiences, or attractions...',
       popular: 'Popular Searches',
-      searches: ['Dubai Mall', 'Desert Safari', 'Burj Khalifa', 'Sheikh Zayed Mosque', 'Dubai Marina']
+      searches: ['Al Jahili Fort', 'Al Bidya Mosque', 'Hatta Heritage Village', 'Al Fahidi District', 'Qasr Al Hosn']
     },
     ar: {
       title: 'أين تريد أن تستكشف؟',
       placeholder: 'ابحث عن الوجهات أو التجارب أو المعالم السياحية...',
       popular: 'عمليات البحث الشائعة',
-      searches: ['دبي مول', 'سفاري الصحراء', 'برج خليفة', 'مسجد الشيخ زايد', 'مارينا دبي']
+      searches: ['قلعة الجاهلي', 'مسجد البدية', 'قرية حتا التراثية', 'حي الفهيدي', 'قصر الحصن']
     }
   };
 

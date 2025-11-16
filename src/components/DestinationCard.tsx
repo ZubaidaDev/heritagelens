@@ -53,7 +53,7 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
 
   const handleGetDirections = () => {
     const query = encodeURIComponent(`${destination.name}, ${destination.location}`);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+    window.open(`https://maps.google.com/maps?q=${query}`, '_blank');
   };
 
   return (
