@@ -1,0 +1,420 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { Session } from '@supabase/supabase-js';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Card } from '@/components/ui/card';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { Loader2, Upload, X, Calendar, MapPin, BookOpen, Image as ImageIcon } from 'lucide-react';
+
+const journalSchema = z.object({
+  title: z.string().trim().min(1, 'Title is required').max(200, 'Title must be less than 200 characters'),
+  content: z.string().trim().min(10, 'Content must be at least 10 characters').max(5000, 'Content must be less than 5000 characters'),
+  location: z.string().trim().max(200, 'Location must be less than 200 characters').optional(),
+  visit_date: z.string().optional(),
+});
+
+export default function Journal() {
+  const navigate = useNavigate();
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [location, setLocation] = useState('');
+  const [visitDate, setVisitDate] = useState('');
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [photoPreview, setPhotoPreview] = useState<string[]>([]);
+  const [journals, setJournals] = useState<any[]>([]);
+  const [errors, setErrors] = useState<{ title?: string; content?: string; location?: string }>({});
+
+  useEffect(() => {
+    // Check auth
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      if (!session) {
+        navigate('/auth');
+      }
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (!session) {
+        navigate('/auth');
+      } else {
+        loadJournals();
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const loadJournals = async () => {
+    const { data, error } = await supabase
+      .from('journals')
+      .select(`
+        *,
+        journal_photos(*)
+      `)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error loading journals:', error);
+    } else {
+      setJournals(data || []);
+    }
+  };
+
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newFiles = Array.from(files);
+    const totalFiles = photos.length + newFiles.length;
+
+    if (totalFiles > 5) {
+      toast.error('You can upload a maximum of 5 photos per journal');
+      return;
+    }
+
+    // Validate file sizes (max 5MB each)
+    const invalidFiles = newFiles.filter(file => file.size > 5 * 1024 * 1024);
+    if (invalidFiles.length > 0) {
+      toast.error('Each photo must be less than 5MB');
+      return;
+    }
+
+    setPhotos([...photos, ...newFiles]);
+
+    // Create preview URLs
+    const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+    setPhotoPreview([...photoPreview, ...newPreviews]);
+  };
+
+  const removePhoto = (index: number) => {
+    const newPhotos = photos.filter((_, i) => i !== index);
+    const newPreviews = photoPreview.filter((_, i) => i !== index);
+    
+    // Revoke the URL to free memory
+    URL.revokeObjectURL(photoPreview[index]);
+    
+    setPhotos(newPhotos);
+    setPhotoPreview(newPreviews);
+  };
+
+  const validateForm = () => {
+    const newErrors: { title?: string; content?: string; location?: string } = {};
+    
+    try {
+      journalSchema.parse({
+        title,
+        content,
+        location: location || undefined,
+        visit_date: visitDate || undefined,
+      });
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        err.errors.forEach((error) => {
+          const field = error.path[0] as string;
+          newErrors[field as keyof typeof newErrors] = error.message;
+        });
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const uploadPhotos = async (journalId: string, userId: string) => {
+    const uploadedUrls: string[] = [];
+
+    for (const photo of photos) {
+      const fileExt = photo.name.split('.').pop();
+      const fileName = `${userId}/${journalId}/${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('journal-photos')
+        .upload(fileName, photo);
+
+      if (uploadError) {
+        console.error('Error uploading photo:', uploadError);
+        continue;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('journal-photos')
+        .getPublicUrl(fileName);
+
+      uploadedUrls.push(publicUrl);
+
+      // Save photo URL to database
+      await supabase
+        .from('journal_photos')
+        .insert({
+          journal_id: journalId,
+          photo_url: publicUrl,
+        });
+    }
+
+    return uploadedUrls;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    if (!session?.user) {
+      toast.error('You must be logged in to create a journal');
+      return;
+    }
+
+    setLoading(true);
+    setUploading(photos.length > 0);
+
+    try {
+      // Create journal entry
+      const { data: journal, error: journalError } = await supabase
+        .from('journals')
+        .insert({
+          user_id: session.user.id,
+          title: title.trim(),
+          content: content.trim(),
+          location: location.trim() || null,
+          visit_date: visitDate || null,
+        })
+        .select()
+        .single();
+
+      if (journalError) throw journalError;
+
+      // Upload photos if any
+      if (photos.length > 0 && journal) {
+        await uploadPhotos(journal.id, session.user.id);
+      }
+
+      toast.success('Journal entry created successfully!');
+      
+      // Reset form
+      setTitle('');
+      setContent('');
+      setLocation('');
+      setVisitDate('');
+      setPhotos([]);
+      setPhotoPreview([]);
+      
+      // Reload journals
+      loadJournals();
+    } catch (error: any) {
+      console.error('Error creating journal:', error);
+      toast.error(error.message || 'Failed to create journal entry');
+    } finally {
+      setLoading(false);
+      setUploading(false);
+    }
+  };
+
+  if (!session) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold gradient-text mb-2">My Journal</h1>
+          <p className="text-muted-foreground">Share your travel experiences and memories</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Create Journal Form */}
+          <Card className="lg:col-span-2 p-6">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <BookOpen className="w-6 h-6 text-primary" />
+              Create New Entry
+            </h2>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="title">Title *</Label>
+                <Input
+                  id="title"
+                  placeholder="My amazing visit to..."
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    setErrors({ ...errors, title: undefined });
+                  }}
+                  disabled={loading}
+                />
+                {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="location"
+                      placeholder="Dubai, UAE"
+                      value={location}
+                      onChange={(e) => {
+                        setLocation(e.target.value);
+                        setErrors({ ...errors, location: undefined });
+                      }}
+                      className="pl-10"
+                      disabled={loading}
+                    />
+                  </div>
+                  {errors.location && <p className="text-sm text-destructive">{errors.location}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="visitDate">Visit Date</Label>
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="visitDate"
+                      type="date"
+                      value={visitDate}
+                      onChange={(e) => setVisitDate(e.target.value)}
+                      className="pl-10"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="content">Your Experience *</Label>
+                <Textarea
+                  id="content"
+                  placeholder="Share your story, what you saw, how you felt..."
+                  value={content}
+                  onChange={(e) => {
+                    setContent(e.target.value);
+                    setErrors({ ...errors, content: undefined });
+                  }}
+                  rows={8}
+                  disabled={loading}
+                />
+                {errors.content && <p className="text-sm text-destructive">{errors.content}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label>Photos (up to 5)</Label>
+                <div className="flex flex-wrap gap-4">
+                  {photoPreview.map((preview, index) => (
+                    <div key={index} className="relative w-24 h-24">
+                      <img
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(index)}
+                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1"
+                        disabled={loading}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                  
+                  {photos.length < 5 && (
+                    <label className="w-24 h-24 border-2 border-dashed border-border rounded-lg flex items-center justify-center cursor-pointer hover:bg-muted transition-colors">
+                      <div className="text-center">
+                        <ImageIcon className="w-6 h-6 mx-auto text-muted-foreground mb-1" />
+                        <span className="text-xs text-muted-foreground">Add</span>
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handlePhotoSelect}
+                        className="hidden"
+                        disabled={loading}
+                      />
+                    </label>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">Each photo must be less than 5MB</p>
+              </div>
+
+              <Button type="submit" className="w-full btn-hero" disabled={loading}>
+                {uploading ? (
+                  <>
+                    <Upload className="mr-2 h-4 w-4 animate-pulse" />
+                    Uploading photos...
+                  </>
+                ) : loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  'Create Journal Entry'
+                )}
+              </Button>
+            </form>
+          </Card>
+
+          {/* Recent Journals */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold">Recent Entries</h2>
+            {journals.length === 0 ? (
+              <Card className="p-6 text-center text-muted-foreground">
+                <BookOpen className="w-12 h-12 mx-auto mb-2 text-muted-foreground/50" />
+                <p>No journal entries yet</p>
+                <p className="text-sm">Create your first entry to get started!</p>
+              </Card>
+            ) : (
+              journals.slice(0, 5).map((journal) => (
+                <Card key={journal.id} className="p-4 hover:shadow-lg transition-shadow">
+                  <h3 className="font-semibold mb-1">{journal.title}</h3>
+                  {journal.location && (
+                    <p className="text-sm text-muted-foreground flex items-center gap-1 mb-2">
+                      <MapPin className="w-3 h-3" />
+                      {journal.location}
+                    </p>
+                  )}
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {journal.content}
+                  </p>
+                  {journal.journal_photos && journal.journal_photos.length > 0 && (
+                    <div className="flex gap-1 mt-2">
+                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
+                        <img
+                          key={idx}
+                          src={photo.photo_url}
+                          alt="Journal"
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      ))}
+                      {journal.journal_photos.length > 3 && (
+                        <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xs">
+                          +{journal.journal_photos.length - 3}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {new Date(journal.created_at).toLocaleDateString()}
+                  </p>
+                </Card>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
