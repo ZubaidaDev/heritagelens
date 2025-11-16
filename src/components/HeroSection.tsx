@@ -40,14 +40,6 @@ export const HeroSection = ({ language }: HeroSectionProps) => {
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6 animate-fade-in">
-        {/* AI Badge */}
-        <div className="inline-flex items-center space-x-2 bg-card/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-border/30">
-          <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-card-foreground">
-            {text[language].aiPowered}
-          </span>
-        </div>
-
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
           {text[language].title}
         </h1>
