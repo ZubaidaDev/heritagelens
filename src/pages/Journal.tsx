@@ -38,6 +38,51 @@ export default function Journal() {
   const [errors, setErrors] = useState<{ title?: string; content?: string; location?: string }>({});
   const [isPublic, setIsPublic] = useState(false);
 
+  const text = {
+    en: {
+      title: 'Travel Journal',
+      subtitle: 'Document your heritage journey',
+      createNew: 'Create New Entry',
+      journalTitle: 'Title',
+      journalContent: 'Content',
+      journalLocation: 'Location',
+      visitDate: 'Visit Date',
+      photos: 'Photos',
+      uploadPhotos: 'Upload Photos',
+      makePublic: 'Make this journal public',
+      submit: 'Submit',
+      submitting: 'Submitting...',
+      loginPrompt: 'Login to Create Journals',
+      publicJournals: 'Public Journals',
+      myJournals: 'My Journals',
+      by: 'by',
+      remove: 'Remove',
+      maxPhotos: 'Maximum 5 photos',
+    },
+    ar: {
+      title: 'مجلة السفر',
+      subtitle: 'وثق رحلتك التراثية',
+      createNew: 'إنشاء إدخال جديد',
+      journalTitle: 'العنوان',
+      journalContent: 'المحتوى',
+      journalLocation: 'الموقع',
+      visitDate: 'تاريخ الزيارة',
+      photos: 'الصور',
+      uploadPhotos: 'تحميل الصور',
+      makePublic: 'اجعل هذه المجلة عامة',
+      submit: 'إرسال',
+      submitting: 'جارٍ الإرسال...',
+      loginPrompt: 'تسجيل الدخول لإنشاء المجلات',
+      publicJournals: 'المجلات العامة',
+      myJournals: 'مجلاتي',
+      by: 'بواسطة',
+      remove: 'إزالة',
+      maxPhotos: 'الحد الأقصى 5 صور',
+    }
+  };
+
+  const isRTL = language === 'ar';
+
   useEffect(() => {
     // Check auth
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -233,26 +278,26 @@ export default function Journal() {
     return (
       <>
         <Navigation language={language} onLanguageChange={setLanguage} />
-        <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12">
+        <div className={`min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12 ${isRTL ? 'rtl' : ''}`}>
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold gradient-text mb-2">Journals</h1>
-            <p className="text-muted-foreground">Discover travel experiences from our community</p>
+            <h1 className="text-4xl font-bold gradient-text mb-2">{text[language].title}</h1>
+            <p className="text-muted-foreground">{text[language].subtitle}</p>
           </div>
           
           <div className="space-y-4">
-            <h2 className="text-xl font-bold">Public Journals</h2>
+            <h2 className="text-xl font-bold">{text[language].publicJournals}</h2>
             {journals.length === 0 ? (
               <Card className="p-6 text-center text-muted-foreground">
                 <BookOpen className="w-12 h-12 mx-auto mb-2 text-muted-foreground/50" />
-                <p>No public journal entries yet</p>
+                <p>{language === 'en' ? 'No public journal entries yet' : 'لا توجد مدخلات عامة للمجلة بعد'}</p>
               </Card>
             ) : (
               journals.map((journal) => (
                 <Card key={journal.id} className="p-4 hover:shadow-lg transition-shadow">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">{journal.title}</h3>
-                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Public</span>
+                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{language === 'en' ? 'Public' : 'عام'}</span>
                   </div>
                   {journal.location && (
                     <p className="text-sm text-muted-foreground flex items-center gap-1 mb-2">
@@ -282,7 +327,7 @@ export default function Journal() {
                   )}
                   <div className="flex items-center justify-between mt-2">
                     <p className="text-xs text-muted-foreground">
-                      By {journal.profiles?.username || 'Anonymous'}
+                      {text[language].by} {journal.profiles?.username || (language === 'en' ? 'Anonymous' : 'مجهول')}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(journal.created_at).toLocaleDateString()}
@@ -293,7 +338,7 @@ export default function Journal() {
             )}
             <div className="text-center mt-8">
               <Button onClick={() => navigate('/auth')} className="btn-hero">
-                Login to Share Your Journey
+                {text[language].loginPrompt}
               </Button>
             </div>
           </div>
@@ -306,27 +351,24 @@ export default function Journal() {
   return (
     <>
       <Navigation language={language} onLanguageChange={setLanguage} />
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12">
+      <div className={`min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12 ${isRTL ? 'rtl' : ''}`}>
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-2">Journals</h1>
-          <p className="text-muted-foreground">Share your travel experiences and discover others' journeys</p>
+          <h1 className="text-4xl font-bold gradient-text mb-2">{text[language].title}</h1>
+          <p className="text-muted-foreground">{language === 'en' ? 'Share your travel experiences and discover others\' journeys' : 'شارك تجاربك السياحية واكتشف رحلات الآخرين'}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Create Journal Form */}
-          <Card className="lg:col-span-2 p-6">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-              <BookOpen className="w-6 h-6 text-primary" />
-              Create New Entry
-            </h2>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <Card className="lg:col-span-2 h-fit">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <h2 className="text-2xl font-bold gradient-text">{text[language].createNew}</h2>
+              
               <div className="space-y-2">
-                <Label htmlFor="title">Title *</Label>
+                <Label htmlFor="title">{text[language].journalTitle} *</Label>
                 <Input
                   id="title"
-                  placeholder="My amazing visit to..."
+                  placeholder={language === 'en' ? "e.g., A Day at Al Fahidi" : "مثال: يوم في الفهيدي"}
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
@@ -339,12 +381,12 @@ export default function Journal() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
+                  <Label htmlFor="location">{text[language].journalLocation}</Label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="location"
-                      placeholder="Dubai, UAE"
+                      placeholder={language === 'en' ? "Dubai, UAE" : "دبي، الإمارات"}
                       value={location}
                       onChange={(e) => {
                         setLocation(e.target.value);
@@ -358,7 +400,7 @@ export default function Journal() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="visitDate">Visit Date</Label>
+                  <Label htmlFor="visitDate">{text[language].visitDate}</Label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -374,10 +416,10 @@ export default function Journal() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="content">Your Experience *</Label>
+                <Label htmlFor="content">{text[language].journalContent} *</Label>
                 <Textarea
                   id="content"
-                  placeholder="Share your story, what you saw, how you felt..."
+                  placeholder={language === 'en' ? "Share your story, what you saw, how you felt..." : "شارك قصتك، ما رأيته، كيف شعرت..."}
                   value={content}
                   onChange={(e) => {
                     setContent(e.target.value);
@@ -390,7 +432,7 @@ export default function Journal() {
               </div>
 
               <div className="space-y-2">
-                <Label>Photos (up to 5)</Label>
+                <Label>{text[language].photos} ({text[language].maxPhotos})</Label>
                 <div className="flex flex-wrap gap-4">
                   {photoPreview.map((preview, index) => (
                     <div key={index} className="relative w-24 h-24">
@@ -414,7 +456,7 @@ export default function Journal() {
                     <label className="w-24 h-24 border-2 border-dashed border-border rounded-lg flex items-center justify-center cursor-pointer hover:bg-muted transition-colors">
                       <div className="text-center">
                         <ImageIcon className="w-6 h-6 mx-auto text-muted-foreground mb-1" />
-                        <span className="text-xs text-muted-foreground">Add</span>
+                        <span className="text-xs text-muted-foreground">{language === 'en' ? 'Add' : 'إضافة'}</span>
                       </div>
                       <input
                         type="file"
@@ -427,14 +469,12 @@ export default function Journal() {
                     </label>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground">Each photo must be less than 5MB</p>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                <div>
-                  <Label htmlFor="is-public" className="font-medium">Make this journal public</Label>
-                  <p className="text-sm text-muted-foreground">Allow everyone to see this journal entry</p>
-                </div>
+              <div className="flex items-center justify-between py-4 border-t border-b">
+                <Label htmlFor="is-public" className="cursor-pointer">
+                  {text[language].makePublic}
+                </Label>
                 <Switch
                   id="is-public"
                   checked={isPublic}
@@ -447,15 +487,15 @@ export default function Journal() {
                 {uploading ? (
                   <>
                     <Upload className="mr-2 h-4 w-4 animate-pulse" />
-                    Uploading photos...
+                    {language === 'en' ? 'Uploading photos...' : 'تحميل الصور...'}
                   </>
                 ) : loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating...
+                    {language === 'en' ? 'Creating...' : 'جارٍ الإنشاء...'}
                   </>
                 ) : (
-                  'Create Journal Entry'
+                  text[language].submit
                 )}
               </Button>
             </form>
@@ -463,12 +503,12 @@ export default function Journal() {
 
           {/* Recent Journals */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold">Recent Entries</h2>
+            <h2 className="text-xl font-bold">{language === 'en' ? 'Recent Entries' : 'الإدخالات الأخيرة'}</h2>
             {journals.length === 0 ? (
               <Card className="p-6 text-center text-muted-foreground">
                 <BookOpen className="w-12 h-12 mx-auto mb-2 text-muted-foreground/50" />
-                <p>No journal entries yet</p>
-                <p className="text-sm">Create your first entry to get started!</p>
+                <p>{language === 'en' ? 'No journal entries yet' : 'لا توجد مدخلات للمجلة بعد'}</p>
+                <p className="text-sm">{language === 'en' ? 'Create your first entry to get started!' : 'أنشئ مدخلك الأول للبدء!'}</p>
               </Card>
             ) : (
               journals.slice(0, 5).map((journal) => (
@@ -476,7 +516,7 @@ export default function Journal() {
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">{journal.title}</h3>
                     {journal.is_public && (
-                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Public</span>
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{language === 'en' ? 'Public' : 'عام'}</span>
                     )}
                   </div>
                   {journal.location && (
@@ -507,7 +547,7 @@ export default function Journal() {
                   )}
                   <div className="flex items-center justify-between mt-2">
                     <p className="text-xs text-muted-foreground">
-                      By {journal.profiles?.username || 'Anonymous'}
+                      {text[language].by} {journal.profiles?.username || (language === 'en' ? 'Anonymous' : 'مجهول')}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(journal.created_at).toLocaleDateString()}
