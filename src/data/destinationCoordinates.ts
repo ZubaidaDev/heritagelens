@@ -22,18 +22,17 @@ export const DESTINATION_COORDINATES: Record<string, { lat: number; lng: number;
   'Al Ain Palace Museum': { lat: 24.2079, lng: 55.7583, placeId: 'ChIJ6_f3C4NcXz4RwFWJTcfKpzs' },
   'Qattara Arts Centre': { lat: 24.2143, lng: 55.7634, placeId: 'ChIJ7_f3C4NcXz4RxFWJTcfKpzs' },
   'Jumeirah Archaeological Site': { lat: 25.2312, lng: 55.2573, placeId: 'ChIJ8_f3C4NcXz4RyFWJTcfKpzs' },
+  'Sheikh Zayed Festival': { lat: 24.2547, lng: 54.6091 },
+  'Qasr Al Hosn Gardens': { lat: 24.4815, lng: 54.3542 },
+  'Heritage Village Abu Dhabi': { lat: 24.4764, lng: 54.3195 },
+  'Al Shindagha Museum': { lat: 25.2697, lng: 55.2867 },
 };
 
 export const getGoogleMapsUrl = (destinationName: string): string => {
   const coords = DESTINATION_COORDINATES[destinationName];
   
   if (coords) {
-    // Use place_id if available for most accurate results
-    if (coords.placeId) {
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destinationName)}&query_place_id=${coords.placeId}`;
-    }
-    // Otherwise use coordinates
-    return `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`;
+    return `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`;
   }
   
   // Fallback to text search if coordinates not found

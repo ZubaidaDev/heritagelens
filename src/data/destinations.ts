@@ -21,7 +21,11 @@ export const DESTINATION_NAMES = [
   'Al Mureijah Art District',
   'Al Ain Palace Museum',
   'Qattara Arts Centre',
-  'Jumeirah Archaeological Site'
+  'Jumeirah Archaeological Site',
+  'Sheikh Zayed Festival',
+  'Qasr Al Hosn Gardens',
+  'Heritage Village Abu Dhabi',
+  'Al Shindagha Museum'
 ] as const;
 
 export type DestinationName = typeof DESTINATION_NAMES[number];

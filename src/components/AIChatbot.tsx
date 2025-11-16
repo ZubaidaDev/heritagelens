@@ -29,7 +29,7 @@ export const AIChatbot = ({ language }: AIChatbotProps) => {
       title: 'AI Travel Assistant',
       placeholder: 'Ask me anything about UAE...',
       send: 'Send',
-      welcome: 'Hello! I\'m your AI travel assistant for UAE. I can help you with destinations, cultural insights, travel tips, and more. What would you like to know?',
+      welcome: 'Ahlan! I\'m your AI travel assistant for UAE. I can help you with destinations, cultural insights, travel tips, and more. What would you like to know?',
       suggestions: [
         'Best time to visit Dubai?',
         'Cultural etiquette in UAE',
