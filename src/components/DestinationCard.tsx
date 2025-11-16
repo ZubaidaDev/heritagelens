@@ -37,7 +37,7 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
       reviews: 'reviews',
       viewDetails: 'View Details',
       getDirections: 'Get Directions',
-      aiTips: 'AI Tips',
+      aiTips: 'Know before you go',
       amenities: 'Amenities',
       nearbyDining: 'Nearby Dining'
     },
@@ -45,7 +45,7 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
       reviews: 'تقييم',
       viewDetails: 'عرض التفاصيل',
       getDirections: 'احصل على الاتجاهات',
-      aiTips: 'نصائح الذكاء الاصطناعي',
+      aiTips: 'اعرف قبل أن تذهب',
       amenities: 'المرافق',
       nearbyDining: 'المطاعم القريبة'
     }
