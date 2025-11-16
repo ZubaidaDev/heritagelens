@@ -14,9 +14,33 @@ serve(async (req) => {
   try {
     const { message, language } = await req.json();
     
+    // Input validation
     if (!message) {
       return new Response(
         JSON.stringify({ error: 'Message is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Length validation (max 1000 characters)
+    if (typeof message !== 'string' || message.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid message format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (message.length > 1000) {
+      return new Response(
+        JSON.stringify({ error: 'Message too long. Maximum 1000 characters allowed.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Language validation
+    if (language && !['en', 'ar'].includes(language)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid language. Use "en" or "ar".' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
