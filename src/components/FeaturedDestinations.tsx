@@ -100,42 +100,24 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
       },
       {
         id: 5,
-        name: 'Burj Khalifa',
-        location: 'Downtown Dubai',
-        image: burjKhalifa,
-        rating: 4.8,
-        reviews: 12453,
+        name: 'Qasr Al Hosn',
+        location: 'Abu Dhabi',
+        image: alJahiliFort,
+        rating: 4.6,
+        reviews: 1245,
         duration: '2-3 hours',
-        price: 'AED 149',
-        category: 'Iconic Landmark',
-        description: 'The world\'s tallest building standing at 828 meters. Offers breathtaking 360-degree views from observation decks on floors 124, 125, and 148. Marvel at cutting-edge engineering and stunning Dubai skyline.',
-        aiTip: 'Book tickets online in advance for better prices. Sunset visits offer spectacular views. Level 148 provides VIP experience with less crowds. Visit Dubai Mall afterward.',
-        amenities: ['Observation Decks', 'VIP Lounge', 'Gift Shop', 'Elevator Access', 'Photography Spots'],
+        price: 'AED 30',
+        category: 'Historic Fort',
+        description: 'Abu Dhabi\'s oldest stone building, dating back to 1760s. Originally a watchtower protecting a freshwater well, it became the royal palace and seat of government. Now a museum showcasing Emirati heritage.',
+        aiTip: 'Visit during weekdays for fewer crowds. Guided tours available in multiple languages. Excellent traditional architecture photography. Cool interiors provide respite from heat.',
+        amenities: ['Museum', 'Guided Tours', 'Exhibitions', 'Café', 'Gift Shop'],
         nearbyRestaurants: [
-          { name: 'At.mosphere', cuisine: 'Fine Dining', distance: 'Inside Building' },
-          { name: 'Armani/Ristorante', cuisine: 'Italian', distance: 'Inside Building' }
+          { name: 'Al Fanar Restaurant', cuisine: 'Traditional Emirati', distance: '2 km' },
+          { name: 'Majlis Café', cuisine: 'Arabic', distance: '1.5 km' }
         ]
       },
       {
         id: 6,
-        name: 'Burj Al Arab',
-        location: 'Jumeirah, Dubai',
-        image: burjAlArab,
-        rating: 4.9,
-        reviews: 8932,
-        duration: '2-4 hours',
-        price: 'AED 250 (Dining)',
-        category: 'Luxury Hotel',
-        description: 'The world\'s only 7-star hotel, shaped like a billowing sail. An architectural marvel standing on its own artificial island. Experience unparalleled luxury and Arabian hospitality.',
-        aiTip: 'Reservations required - book afternoon tea or dining to access. Dress code enforced. Photography from outside is free. Visit Jumeirah Beach for iconic photos.',
-        amenities: ['Fine Dining', 'Spa', 'Beach Access', 'Butler Service', 'Helicopter Pad'],
-        nearbyRestaurants: [
-          { name: 'Al Mahara', cuisine: 'Seafood', distance: 'Inside Hotel' },
-          { name: 'Pierchic', cuisine: 'Seafood', distance: '500m' }
-        ]
-      },
-      {
-        id: 7,
         name: 'Sheikh Zayed Grand Mosque',
         location: 'Abu Dhabi',
         image: grandMosque,
@@ -153,21 +135,39 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
         ]
       },
       {
-        id: 8,
-        name: 'Desert Safari Experience',
-        location: 'Dubai Desert Conservation Reserve',
-        image: desertSafari,
-        rating: 4.7,
-        reviews: 9821,
-        duration: '6 hours',
-        price: 'AED 250',
-        category: 'Desert Adventure',
-        description: 'Experience authentic Arabian desert with dune bashing, camel rides, and traditional Bedouin camp. Enjoy cultural performances, henna painting, and BBQ dinner under the stars.',
-        aiTip: 'Evening safaris most popular. Wear comfortable clothes and closed shoes. Bring sunglasses and sunscreen. Photography opportunities at sunset. Vegetarian meals available.',
-        amenities: ['Hotel Pickup', 'Dune Bashing', 'Camel Rides', 'BBQ Dinner', 'Entertainment'],
+        id: 7,
+        name: 'Mleiha Archaeological Centre',
+        location: 'Sharjah',
+        image: hattaHeritage,
+        rating: 4.5,
+        reviews: 892,
+        duration: '3-4 hours',
+        price: 'AED 25',
+        category: 'Archaeological Site',
+        description: 'Ancient archaeological site with tombs and artifacts dating back 130,000 years. Features fossils, Stone Age tools, and Bronze Age tombs. Desert activities like camel trekking and stargazing available.',
+        aiTip: 'Combine museum visit with desert activities. Best visited October-April for pleasant weather. Bring hiking shoes for tomb trail. Night camping experiences available.',
+        amenities: ['Museum', 'Desert Activities', 'Fossil Sites', 'Café', 'Adventure Tours'],
         nearbyRestaurants: [
-          { name: 'Al Hadheerah', cuisine: 'Desert Dining', distance: 'Camp Location' },
-          { name: 'Sonara Camp', cuisine: 'Bedouin BBQ', distance: 'Camp Location' }
+          { name: 'Mleiha Desert Café', cuisine: 'International', distance: 'On-site' },
+          { name: 'Fossil Rock Café', cuisine: 'Café', distance: '5 km' }
+        ]
+      },
+      {
+        id: 8,
+        name: 'Sharjah Heritage Area',
+        location: 'Heart of Sharjah',
+        image: alFahidi,
+        rating: 4.6,
+        reviews: 2134,
+        duration: '3-5 hours',
+        price: 'AED 15',
+        category: 'Heritage Quarter',
+        description: 'Beautifully restored traditional neighborhood with museums, souqs, and coral-stone houses. Includes Bait Al Naboodah, heritage museums, and traditional crafts workshops. Step back into 1950s Arabia.',
+        aiTip: 'Start at Visitor Center for orientation. Visit multiple museums with combined ticket. Traditional workshops offer hands-on experiences. Evening visits offer cooler weather and ambient lighting.',
+        amenities: ['Museums', 'Traditional Souq', 'Art Galleries', 'Craft Workshops', 'Cafés'],
+        nearbyRestaurants: [
+          { name: 'Al Fanar Restaurant', cuisine: 'Emirati', distance: '500m' },
+          { name: 'Shababeek Restaurant', cuisine: 'Traditional', distance: '300m' }
         ]
       }
     ],
@@ -246,42 +246,24 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
       },
       {
         id: 5,
-        name: 'برج خليفة',
-        location: 'وسط مدينة دبي',
-        image: burjKhalifa,
-        rating: 4.8,
-        reviews: 12453,
+        name: 'قصر الحصن',
+        location: 'أبوظبي',
+        image: alJahiliFort,
+        rating: 4.6,
+        reviews: 1245,
         duration: '٢-٣ ساعات',
-        price: '١٤٩ درهم',
-        category: 'معلم أيقوني',
-        description: 'أطول مبنى في العالم بارتفاع ٨٢٨ متر. يوفر إطلالات بانورامية خلابة بزاوية ٣٦٠ درجة من منصات المراقبة في الطوابق ١٢٤ و١٢٥ و١٤٨. تعجب من الهندسة المتطورة وأفق دبي المذهل.',
-        aiTip: 'احجز التذاكر عبر الإنترنت مسبقاً لأسعار أفضل. زيارات الغروب توفر مناظر رائعة. المستوى ١٤٨ يوفر تجربة VIP مع ازدحام أقل. قم بزيارة دبي مول بعد ذلك.',
-        amenities: ['منصات مراقبة', 'صالة VIP', 'محل هدايا', 'مصعد', 'نقاط تصوير'],
+        price: '٣٠ درهم',
+        category: 'قلعة تاريخية',
+        description: 'أقدم مبنى حجري في أبوظبي، يعود تاريخه إلى ستينيات القرن الثامن عشر. كان في الأصل برج مراقبة يحمي بئر مياه عذبة، ثم أصبح القصر الملكي ومقر الحكومة. الآن متحف يعرض التراث الإماراتي.',
+        aiTip: 'قم بالزيارة خلال أيام الأسبوع لتجنب الازدحام. جولات مرشدة متاحة بعدة لغات. تصوير معماري تقليدي ممتاز. الداخل البارد يوفر الراحة من الحرارة.',
+        amenities: ['متحف', 'جولات مرشدة', 'معارض', 'مقهى', 'محل هدايا'],
         nearbyRestaurants: [
-          { name: 'أت موسفير', cuisine: 'فاخر', distance: 'داخل المبنى' },
-          { name: 'أرماني ريستورانتي', cuisine: 'إيطالي', distance: 'داخل المبنى' }
+          { name: 'مطعم الفنر', cuisine: 'إماراتي تقليدي', distance: '٢ كم' },
+          { name: 'مقهى المجلس', cuisine: 'عربي', distance: '١.٥ كم' }
         ]
       },
       {
         id: 6,
-        name: 'برج العرب',
-        location: 'جميرا، دبي',
-        image: burjAlArab,
-        rating: 4.9,
-        reviews: 8932,
-        duration: '٢-٤ ساعات',
-        price: '٢٥٠ درهم (وجبة)',
-        category: 'فندق فاخر',
-        description: 'الفندق الوحيد ذو السبع نجوم في العالم، على شكل شراع منتفخ. تحفة معمارية تقف على جزيرتها الاصطناعية الخاصة. جرب الرفاهية والضيافة العربية التي لا مثيل لها.',
-        aiTip: 'الحجز مطلوب - احجز شاي بعد الظهر أو وجبة للدخول. يطبق قواعد اللباس. التصوير من الخارج مجاني. قم بزيارة شاطئ جميرا للصور الأيقونية.',
-        amenities: ['مطاعم فاخرة', 'سبا', 'شاطئ', 'خدمة كبار الشخصيات', 'مهبط هليكوبتر'],
-        nearbyRestaurants: [
-          { name: 'المحارة', cuisine: 'مأكولات بحرية', distance: 'داخل الفندق' },
-          { name: 'بيرشيك', cuisine: 'مأكولات بحرية', distance: '٥٠٠ م' }
-        ]
-      },
-      {
-        id: 7,
         name: 'مسجد الشيخ زايد الكبير',
         location: 'أبوظبي',
         image: grandMosque,
@@ -299,21 +281,39 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
         ]
       },
       {
-        id: 8,
-        name: 'تجربة رحلة السفاري الصحراوية',
-        location: 'محمية دبي الصحراوية',
-        image: desertSafari,
-        rating: 4.7,
-        reviews: 9821,
-        duration: '٦ ساعات',
-        price: '٢٥٠ درهم',
-        category: 'مغامرة صحراوية',
-        description: 'اختبر الصحراء العربية الأصيلة مع التزحلق على الكثبان، ركوب الجمال، والمخيم البدوي التقليدي. استمتع بالعروض الثقافية، الحناء، وعشاء الشواء تحت النجوم.',
-        aiTip: 'رحلات المساء الأكثر شعبية. ارتدِ ملابس مريحة وأحذية مغلقة. أحضر نظارات شمسية وواقي شمس. فرص التصوير عند الغروب. وجبات نباتية متاحة.',
-        amenities: ['توصيل من الفندق', 'التزحلق على الكثبان', 'ركوب الجمال', 'عشاء شواء', 'ترفيه'],
+        id: 7,
+        name: 'مركز مليحة الأثري',
+        location: 'الشارقة',
+        image: hattaHeritage,
+        rating: 4.5,
+        reviews: 892,
+        duration: '٣-٤ ساعات',
+        price: '٢٥ درهم',
+        category: 'موقع أثري',
+        description: 'موقع أثري قديم مع مقابر وأدوات تعود إلى ١٣٠,٠٠٠ سنة. يحتوي على حفريات، أدوات العصر الحجري، ومقابر العصر البرونزي. أنشطة صحراوية مثل ركوب الجمال ومراقبة النجوم متاحة.',
+        aiTip: 'اجمع زيارة المتحف مع الأنشطة الصحراوية. أفضل زيارة من أكتوبر-أبريل للطقس اللطيف. أحضر أحذية المشي لمسار المقابر. تجارب التخييم الليلي متاحة.',
+        amenities: ['متحف', 'أنشطة صحراوية', 'مواقع الحفريات', 'مقهى', 'جولات مغامرة'],
         nearbyRestaurants: [
-          { name: 'الحضيرة', cuisine: 'طعام صحراوي', distance: 'موقع المخيم' },
-          { name: 'مخيم سونارا', cuisine: 'شواء بدوي', distance: 'موقع المخيم' }
+          { name: 'مقهى مليحة الصحراوي', cuisine: 'عالمي', distance: 'في الموقع' },
+          { name: 'مقهى صخرة الحفريات', cuisine: 'مقهى', distance: '٥ كم' }
+        ]
+      },
+      {
+        id: 8,
+        name: 'منطقة الشارقة التراثية',
+        location: 'قلب الشارقة',
+        image: alFahidi,
+        rating: 4.6,
+        reviews: 2134,
+        duration: '٣-٥ ساعات',
+        price: '١٥ درهم',
+        category: 'حي تراثي',
+        description: 'حي تقليدي مرمم بشكل جميل مع متاحف، أسواق، وبيوت حجرية مرجانية. يشمل بيت النابودة، متاحف التراث، وورش الحرف التقليدية. عد بالزمن إلى خمسينيات الجزيرة العربية.',
+        aiTip: 'ابدأ من مركز الزوار للتوجيه. قم بزيارة متاحف متعددة بتذكرة مشتركة. الورش التقليدية تقدم تجارب عملية. الزيارات المسائية توفر طقس أبرد وإضاءة محيطة.',
+        amenities: ['متاحف', 'سوق تقليدي', 'معارض فنية', 'ورش حرفية', 'مقاهي'],
+        nearbyRestaurants: [
+          { name: 'مطعم الفنر', cuisine: 'إماراتي', distance: '٥٠٠ م' },
+          { name: 'مطعم شبابيك', cuisine: 'تقليدي', distance: '٣٠٠ م' }
         ]
       }
     ]
