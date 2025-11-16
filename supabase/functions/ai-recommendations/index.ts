@@ -99,7 +99,7 @@ Provide 3 recommendations in this exact JSON format:
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    const aiResponse = await fetch('https://api.lovable.app/v1/ai/text', {
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${lovableApiKey}`,
@@ -107,16 +107,27 @@ Provide 3 recommendations in this exact JSON format:
       },
       body: JSON.stringify({
         model: 'google/gemini-2.5-flash',
-        prompt: prompt,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a UAE heritage travel expert. Provide recommendations in valid JSON format only.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
       }),
     });
 
     if (!aiResponse.ok) {
+      const errorText = await aiResponse.text();
+      console.error('AI API error:', aiResponse.status, errorText);
       throw new Error(`AI API error: ${aiResponse.statusText}`);
     }
 
     const aiData = await aiResponse.json();
-    const aiText = aiData.text || aiData.choices?.[0]?.message?.content || '';
+    const aiText = aiData.choices?.[0]?.message?.content || '';
     
     // Extract JSON from response
     let recommendations = [];
