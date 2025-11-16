@@ -24,6 +24,8 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
+  const [suggestedUsernames, setSuggestedUsernames] = useState<string[]>([]);
+  const [checkingUsername, setCheckingUsername] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; fullName?: string; username?: string }>({});
 
   useEffect(() => {
@@ -69,7 +71,61 @@ export default function Auth() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const validateSignup = () => {
+  const checkUsernameAvailability = async (usernameToCheck: string) => {
+    if (!usernameToCheck || usernameToCheck.length < 3) return true;
+    
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('username', usernameToCheck)
+      .maybeSingle();
+    
+    return !data; // Returns true if username is available
+  };
+
+  const generateUsernameSuggestions = (base: string) => {
+    const suggestions: string[] = [];
+    const cleanBase = base.toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    if (cleanBase.length >= 3) {
+      suggestions.push(cleanBase);
+      suggestions.push(`${cleanBase}${Math.floor(Math.random() * 999)}`);
+      suggestions.push(`${cleanBase}_${Math.floor(Math.random() * 999)}`);
+      suggestions.push(`${cleanBase}${new Date().getFullYear()}`);
+    }
+    
+    return suggestions.slice(0, 3);
+  };
+
+  const handleUsernameChange = async (value: string) => {
+    setUsername(value);
+    setErrors({ ...errors, username: undefined });
+    
+    if (value.length >= 3) {
+      setCheckingUsername(true);
+      const isAvailable = await checkUsernameAvailability(value);
+      setCheckingUsername(false);
+      
+      if (!isAvailable) {
+        setErrors({ ...errors, username: 'Username is already taken' });
+        const suggestions = generateUsernameSuggestions(value);
+        const availableSuggestions: string[] = [];
+        
+        for (const suggestion of suggestions) {
+          const available = await checkUsernameAvailability(suggestion);
+          if (available) {
+            availableSuggestions.push(suggestion);
+          }
+        }
+        
+        setSuggestedUsernames(availableSuggestions);
+      } else {
+        setSuggestedUsernames([]);
+      }
+    }
+  };
+
+  const validateSignup = async () => {
     const newErrors: { email?: string; password?: string; fullName?: string; username?: string } = {};
     
     try {
@@ -101,6 +157,14 @@ export default function Auth() {
     } catch (err) {
       if (err instanceof z.ZodError) {
         newErrors.username = err.errors[0].message;
+      }
+    }
+    
+    // Check username availability
+    if (!newErrors.username) {
+      const isAvailable = await checkUsernameAvailability(username);
+      if (!isAvailable) {
+        newErrors.username = 'Username is already taken';
       }
     }
     
@@ -153,6 +217,7 @@ export default function Auth() {
         emailRedirectTo: redirectUrl,
         data: {
           full_name: fullName.trim(),
+          username: username.trim(),
         }
       }
     });
@@ -270,15 +335,38 @@ export default function Auth() {
                     type="text"
                     placeholder="johndoe"
                     value={username}
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                      setErrors({ ...errors, username: undefined });
-                    }}
+                    onChange={(e) => handleUsernameChange(e.target.value)}
                     className="pl-10"
                     disabled={loading}
                   />
+                  {checkingUsername && (
+                    <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-muted-foreground" />
+                  )}
                 </div>
                 {errors.username && <p className="text-sm text-destructive">{errors.username}</p>}
+                {suggestedUsernames.length > 0 && (
+                  <div className="mt-2 space-y-2">
+                    <p className="text-xs text-muted-foreground">Suggestions:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {suggestedUsernames.map((suggestion) => (
+                        <Button
+                          key={suggestion}
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setUsername(suggestion);
+                            setSuggestedUsernames([]);
+                            setErrors({ ...errors, username: undefined });
+                          }}
+                          className="text-xs"
+                        >
+                          {suggestion}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
