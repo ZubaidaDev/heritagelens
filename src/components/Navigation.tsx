@@ -44,7 +44,7 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
       brand: 'HeritageLens',
       destinations: 'Destinations',
       reviews: 'Reviews',
-      journal: 'My Journal',
+      journal: 'Journals',
       login: 'Login',
       logout: 'Logout'
     },
@@ -52,7 +52,7 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
       brand: 'عدسة التراث',
       destinations: 'الوجهات',
       reviews: 'التقييمات',
-      journal: 'يومياتي',
+      journal: 'اليوميات',
       login: 'تسجيل الدخول',
       logout: 'تسجيل الخروج'
     }

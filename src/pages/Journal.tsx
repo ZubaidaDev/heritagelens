@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Navigation } from '@/components/Navigation';
 import { supabase } from '@/integrations/supabase/client';
 import { Session } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { Loader2, Upload, X, Calendar, MapPin, BookOpen, Image as ImageIcon } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 
 const journalSchema = z.object({
   title: z.string().trim().min(1, 'Title is required').max(200, 'Title must be less than 200 characters'),
@@ -21,6 +23,7 @@ const journalSchema = z.object({
 export default function Journal() {
   const navigate = useNavigate();
   const [session, setSession] = useState<Session | null>(null);
+  const [language, setLanguage] = useState<'en' | 'ar'>('en');
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [title, setTitle] = useState('');
@@ -31,35 +34,37 @@ export default function Journal() {
   const [photoPreview, setPhotoPreview] = useState<string[]>([]);
   const [journals, setJournals] = useState<any[]>([]);
   const [errors, setErrors] = useState<{ title?: string; content?: string; location?: string }>({});
+  const [isPublic, setIsPublic] = useState(false);
 
   useEffect(() => {
     // Check auth
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
-      if (!session) {
-        navigate('/auth');
-      }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (!session) {
-        navigate('/auth');
-      } else {
-        loadJournals();
-      }
     });
 
+    // Load journals regardless of auth state (for public journals)
+    loadJournals();
+
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, []);
+
+  useEffect(() => {
+    loadJournals();
+  }, [session]);
 
   const loadJournals = async () => {
     const { data, error } = await supabase
       .from('journals')
       .select(`
         *,
-        journal_photos(*)
+        journal_photos(*),
+        profiles(username)
       `)
+      .or(session?.user?.id ? `user_id.eq.${session.user.id},is_public.eq.true` : `is_public.eq.true`)
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -188,6 +193,7 @@ export default function Journal() {
           content: content.trim(),
           location: location.trim() || null,
           visit_date: visitDate || null,
+          is_public: isPublic,
         })
         .select()
         .single();
@@ -208,6 +214,7 @@ export default function Journal() {
       setVisitDate('');
       setPhotos([]);
       setPhotoPreview([]);
+      setIsPublic(false);
       
       // Reload journals
       loadJournals();
@@ -221,15 +228,87 @@ export default function Journal() {
   };
 
   if (!session) {
-    return null;
+    return (
+      <>
+        <Navigation language={language} onLanguageChange={setLanguage} />
+        <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold gradient-text mb-2">Journals</h1>
+            <p className="text-muted-foreground">Discover travel experiences from our community</p>
+          </div>
+          
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold">Public Journals</h2>
+            {journals.length === 0 ? (
+              <Card className="p-6 text-center text-muted-foreground">
+                <BookOpen className="w-12 h-12 mx-auto mb-2 text-muted-foreground/50" />
+                <p>No public journal entries yet</p>
+              </Card>
+            ) : (
+              journals.map((journal) => (
+                <Card key={journal.id} className="p-4 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-semibold">{journal.title}</h3>
+                    <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Public</span>
+                  </div>
+                  {journal.location && (
+                    <p className="text-sm text-muted-foreground flex items-center gap-1 mb-2">
+                      <MapPin className="w-3 h-3" />
+                      {journal.location}
+                    </p>
+                  )}
+                  <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+                    {journal.content}
+                  </p>
+                  {journal.journal_photos && journal.journal_photos.length > 0 && (
+                    <div className="flex gap-1 mt-2">
+                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
+                        <img
+                          key={idx}
+                          src={photo.photo_url}
+                          alt="Journal"
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      ))}
+                      {journal.journal_photos.length > 3 && (
+                        <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xs">
+                          +{journal.journal_photos.length - 3}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="text-xs text-muted-foreground">
+                      By {journal.profiles?.username || 'Anonymous'}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(journal.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                </Card>
+              ))
+            )}
+            <div className="text-center mt-8">
+              <Button onClick={() => navigate('/auth')} className="btn-hero">
+                Login to Share Your Journey
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12">
+    <>
+      <Navigation language={language} onLanguageChange={setLanguage} />
+      <div className="min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12">
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-2">My Journal</h1>
-          <p className="text-muted-foreground">Share your travel experiences and memories</p>
+          <h1 className="text-4xl font-bold gradient-text mb-2">Journals</h1>
+          <p className="text-muted-foreground">Share your travel experiences and discover others' journeys</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -349,6 +428,19 @@ export default function Journal() {
                 <p className="text-xs text-muted-foreground">Each photo must be less than 5MB</p>
               </div>
 
+              <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                <div>
+                  <Label htmlFor="is-public" className="font-medium">Make this journal public</Label>
+                  <p className="text-sm text-muted-foreground">Allow everyone to see this journal entry</p>
+                </div>
+                <Switch
+                  id="is-public"
+                  checked={isPublic}
+                  onCheckedChange={setIsPublic}
+                  disabled={loading}
+                />
+              </div>
+
               <Button type="submit" className="w-full btn-hero" disabled={loading}>
                 {uploading ? (
                   <>
@@ -379,14 +471,19 @@ export default function Journal() {
             ) : (
               journals.slice(0, 5).map((journal) => (
                 <Card key={journal.id} className="p-4 hover:shadow-lg transition-shadow">
-                  <h3 className="font-semibold mb-1">{journal.title}</h3>
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-semibold">{journal.title}</h3>
+                    {journal.is_public && (
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Public</span>
+                    )}
+                  </div>
                   {journal.location && (
                     <p className="text-sm text-muted-foreground flex items-center gap-1 mb-2">
                       <MapPin className="w-3 h-3" />
                       {journal.location}
                     </p>
                   )}
-                  <p className="text-sm text-muted-foreground line-clamp-2">
+                  <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
                     {journal.content}
                   </p>
                   {journal.journal_photos && journal.journal_photos.length > 0 && (
@@ -406,9 +503,14 @@ export default function Journal() {
                       )}
                     </div>
                   )}
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {new Date(journal.created_at).toLocaleDateString()}
-                  </p>
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="text-xs text-muted-foreground">
+                      By {journal.profiles?.username || 'Anonymous'}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(journal.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
                 </Card>
               ))
             )}
@@ -416,5 +518,6 @@ export default function Journal() {
         </div>
       </div>
     </div>
+    </>
   );
 }
