@@ -12,14 +12,14 @@ export const Navigation = ({ onLoginClick, language, onLanguageChange }: Navigat
   
   const text = {
     en: {
-      brand: 'UAE Explorer',
+      brand: 'HeritageLens',
       destinations: 'Destinations',
       experiences: 'Experiences', 
       reviews: 'Reviews',
       login: 'Login'
     },
     ar: {
-      brand: 'مستكشف الإمارات',
+      brand: 'عدسة التراث',
       destinations: 'الوجهات',
       experiences: 'التجارب',
       reviews: 'التقييمات', 

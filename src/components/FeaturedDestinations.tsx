@@ -1,8 +1,8 @@
 import { DestinationCard } from './DestinationCard';
-import burjKhalifa from '@/assets/burj-khalifa.jpg';
-import grandMosque from '@/assets/grand-mosque.jpg';
-import desertSafari from '@/assets/desert-safari.jpg';
-import burjAlArab from '@/assets/burj-al-arab.jpg';
+import alJahiliFort from '@/assets/al-jahili-fort.jpg';
+import alBidyaMosque from '@/assets/al-bidya-mosque.jpg';
+import hattaHeritage from '@/assets/hatta-heritage.jpg';
+import alFahidi from '@/assets/al-fahidi.jpg';
 
 interface FeaturedDestinationsProps {
   language: 'en' | 'ar';
@@ -24,148 +24,148 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
     en: [
       {
         id: 1,
-        name: 'Burj Khalifa',
-        location: 'Downtown Dubai',
-        image: burjKhalifa,
-        rating: 4.8,
-        reviews: 12500,
+        name: 'Al Jahili Fort',
+        location: 'Al Ain, Abu Dhabi',
+        image: alJahiliFort,
+        rating: 4.7,
+        reviews: 2850,
         duration: '2-3 hours',
-        price: 'From AED 149',
-        category: 'Architecture',
-        description: 'The world\'s tallest building offering breathtaking views of Dubai',
-        aiTip: 'Best visited during sunset for stunning golden hour views. Book skip-the-line tickets in advance. Dress code applies for fine dining restaurants.',
-        amenities: ['Observation Deck', 'Fine Dining', 'Gift Shop', 'Photography'],
+        price: 'AED 10',
+        category: 'Historic Fort',
+        description: 'One of the largest forts in Al Ain, built in 1891 to protect the city and its precious palm groves. Features stunning desert architecture and exhibits documenting the life of Sheikh Zayed.',
+        aiTip: 'Best visited early morning or late afternoon to avoid heat. Free parking available. Photography enthusiasts will love the golden hour lighting on the fort walls.',
+        amenities: ['Free Parking', 'Guided Tours', 'Gift Shop', 'Rest Areas', 'Wheelchair Access'],
         nearbyRestaurants: [
-          { name: 'At.mosphere', cuisine: 'Fine Dining', distance: '0.1 km' },
-          { name: 'Armani/Ristorante', cuisine: 'Italian', distance: '0.2 km' }
+          { name: 'Mandi House', cuisine: 'Traditional Emirati', distance: '1.2 km' },
+          { name: 'Al Mallah', cuisine: 'Arabic', distance: '800m' }
         ]
       },
       {
         id: 2,
-        name: 'Sheikh Zayed Grand Mosque',
-        location: 'Abu Dhabi',
-        image: grandMosque,
-        rating: 4.9,
-        reviews: 8200,
-        duration: '1.5-2 hours',
+        name: 'Al Bidya Mosque',
+        location: 'Fujairah',
+        image: alBidyaMosque,
+        rating: 4.8,
+        reviews: 1920,
+        duration: '1 hour',
         price: 'Free',
-        category: 'Religious & Cultural',
-        description: 'Magnificent white mosque showcasing Islamic architecture',
-        aiTip: 'Visit during early morning or late afternoon for best photography. Modest dress code required - abayas available for women. Free guided tours available.',
-        amenities: ['Guided Tours', 'Prayer Halls', 'Library', 'Museum'],
+        category: 'Historic Mosque',
+        description: 'The oldest mosque in the UAE, dating back to 1446. Features unique mud-brick and stone construction with four distinctive domes. A hidden gem showcasing early Islamic architecture.',
+        aiTip: 'Modest dress required. Remove shoes before entering. Visit during non-prayer times. Beautiful mountain backdrop perfect for photography.',
+        amenities: ['Free Entry', 'Parking', 'Cultural Site', 'Historic Monument'],
         nearbyRestaurants: [
-          { name: 'Emirates Palace Café', cuisine: 'Middle Eastern', distance: '5.2 km' },
-          { name: 'Mezlai', cuisine: 'Emirati', distance: '5.8 km' }
+          { name: 'Sadaf Restaurant', cuisine: 'Seafood', distance: '5 km' },
+          { name: 'Al Meshwar', cuisine: 'Lebanese', distance: '3.8 km' }
         ]
       },
       {
         id: 3,
-        name: 'Desert Safari',
-        location: 'Dubai Desert',
-        image: desertSafari,
-        rating: 4.7,
-        reviews: 15600,
-        duration: '6-7 hours',
-        price: 'From AED 280',
-        category: 'Adventure',
-        description: 'Thrilling desert adventure with dune bashing and cultural entertainment',
-        aiTip: 'Evening safaris offer cooler weather and stunning sunsets. Wear comfortable clothes and closed shoes. Don\'t eat heavy meals before dune bashing.',
-        amenities: ['Dune Bashing', 'Camel Riding', 'BBQ Dinner', 'Traditional Shows'],
+        name: 'Hatta Heritage Village',
+        location: 'Hatta, Dubai',
+        image: hattaHeritage,
+        rating: 4.6,
+        reviews: 3120,
+        duration: '2-3 hours',
+        price: 'AED 5',
+        category: 'Heritage Village',
+        description: 'Restored mountain village showcasing traditional UAE life from centuries past. Explore ancient houses, defensive towers, and learn about falaj irrigation systems.',
+        aiTip: 'Combine with Hatta Dam visit for a full day trip. Bring water as mountain climate can be warm. Traditional crafts demonstrations on weekends.',
+        amenities: ['Museum', 'Traditional Houses', 'Fort', 'Parking', 'Visitor Center'],
         nearbyRestaurants: [
-          { name: 'Desert Camp Restaurant', cuisine: 'BBQ', distance: '0 km' },
-          { name: 'Bedouin Tent Dining', cuisine: 'Arabic', distance: '0 km' }
+          { name: 'Hatta Fort Hotel Restaurant', cuisine: 'International', distance: '2 km' },
+          { name: 'Damani Lodge', cuisine: 'Café', distance: '1.5 km' }
         ]
       },
       {
         id: 4,
-        name: 'Burj Al Arab',
-        location: 'Jumeirah Beach',
-        image: burjAlArab,
-        rating: 4.6,
-        reviews: 6800,
-        duration: '2-4 hours',
-        price: 'From AED 500',
-        category: 'Luxury Hotel',
-        description: 'Iconic sail-shaped luxury hotel symbolizing Dubai\'s opulence',
-        aiTip: 'Dining reservations required to access the hotel. Afternoon tea at Skyview Bar offers great views. Helicopter tours provide best exterior photos.',
-        amenities: ['Luxury Dining', 'Spa Services', 'Beach Access', 'Helicopter Pad'],
+        name: 'Al Fahidi Historical District',
+        location: 'Bur Dubai',
+        image: alFahidi,
+        rating: 4.9,
+        reviews: 5640,
+        duration: '3-4 hours',
+        price: 'Free',
+        category: 'Historic Quarter',
+        description: 'Dubai\'s oldest residential neighborhood with restored wind-tower houses, narrow lanes, and art galleries. Experience authentic old Dubai away from the modern skyline.',
+        aiTip: 'Visit in the evening for cooler temperatures and atmospheric lighting. Many small museums and galleries inside. Arabic Coffee Museum is a must-visit.',
+        amenities: ['Art Galleries', 'Museums', 'Traditional Cafés', 'Heritage Tours', 'Souvenir Shops'],
         nearbyRestaurants: [
-          { name: 'Al Mahara', cuisine: 'Seafood', distance: '0 km' },
-          { name: 'Skyview Bar', cuisine: 'International', distance: '0 km' }
+          { name: 'Arabian Tea House', cuisine: 'Emirati', distance: '100m' },
+          { name: 'XVA Café', cuisine: 'Organic/Vegetarian', distance: '150m' }
         ]
       }
     ],
     ar: [
       {
         id: 1,
-        name: 'برج خليفة',
-        location: 'وسط مدينة دبي',
-        image: burjKhalifa,
-        rating: 4.8,
-        reviews: 12500,
-        duration: '2-3 ساعات',
-        price: 'من 149 درهم',
-        category: 'العمارة',
-        description: 'أطول مبنى في العالم يوفر إطلالات خلابة على دبي',
-        aiTip: 'يفضل الزيارة عند غروب الشمس للحصول على إطلالات ذهبية مذهلة. احجز تذاكر تخطي الطابور مسبقاً. يطبق قانون اللباس في مطاعم الطعام الفاخر.',
-        amenities: ['منصة المراقبة', 'مطاعم فاخرة', 'متجر الهدايا', 'التصوير'],
+        name: 'قلعة الجاهلي',
+        location: 'العين، أبوظبي',
+        image: alJahiliFort,
+        rating: 4.7,
+        reviews: 2850,
+        duration: '٢-٣ ساعات',
+        price: '١٠ درهم',
+        category: 'قلعة تاريخية',
+        description: 'واحدة من أكبر القلاع في العين، بنيت عام ١٨٩١ لحماية المدينة وبساتين النخيل الثمينة. تتميز بعمارة صحراوية مذهلة ومعارض توثق حياة الشيخ زايد.',
+        aiTip: 'يفضل الزيارة في الصباح الباكر أو بعد العصر لتجنب الحرارة. موقف مجاني متاح. محبو التصوير سيحبون إضاءة الساعة الذهبية على جدران القلعة.',
+        amenities: ['موقف مجاني', 'جولات مرشدة', 'محل هدايا', 'مناطق استراحة', 'مرافق للكراسي المتحركة'],
         nearbyRestaurants: [
-          { name: 'أتموسفير', cuisine: 'طعام فاخر', distance: '0.1 كم' },
-          { name: 'أرماني/ريستورانتي', cuisine: 'إيطالي', distance: '0.2 كم' }
+          { name: 'بيت المندي', cuisine: 'إماراتي تقليدي', distance: '١.٢ كم' },
+          { name: 'الملاح', cuisine: 'عربي', distance: '٨٠٠ م' }
         ]
       },
       {
         id: 2,
-        name: 'مسجد الشيخ زايد الكبير',
-        location: 'أبوظبي',
-        image: grandMosque,
-        rating: 4.9,
-        reviews: 8200,
-        duration: '1.5-2 ساعة',
+        name: 'مسجد البدية',
+        location: 'الفجيرة',
+        image: alBidyaMosque,
+        rating: 4.8,
+        reviews: 1920,
+        duration: 'ساعة واحدة',
         price: 'مجاني',
-        category: 'ديني وثقافي',
-        description: 'مسجد أبيض رائع يعرض العمارة الإسلامية',
-        aiTip: 'زيارة في الصباح الباكر أو بعد الظهر المتأخر للحصول على أفضل صور. مطلوب لباس محتشم - عباءات متوفرة للنساء. جولات مجانية متاحة.',
-        amenities: ['جولات مرشدة', 'قاعات الصلاة', 'مكتبة', 'متحف'],
+        category: 'مسجد تاريخي',
+        description: 'أقدم مسجد في الإمارات، يعود تاريخه إلى ١٤٤٦. يتميز ببناء فريد من الطوب الطيني والحجر مع أربع قباب مميزة. جوهرة مخفية تعرض العمارة الإسلامية المبكرة.',
+        aiTip: 'يتطلب ملابس محتشمة. خلع الأحذية قبل الدخول. الزيارة خارج أوقات الصلاة. خلفية جبلية جميلة مثالية للتصوير.',
+        amenities: ['دخول مجاني', 'موقف سيارات', 'موقع ثقافي', 'معلم تاريخي'],
         nearbyRestaurants: [
-          { name: 'مقهى قصر الإمارات', cuisine: 'شرق أوسطي', distance: '5.2 كم' },
-          { name: 'مزلاي', cuisine: 'إماراتي', distance: '5.8 كم' }
+          { name: 'مطعم الصدف', cuisine: 'مأكولات بحرية', distance: '٥ كم' },
+          { name: 'المشوار', cuisine: 'لبناني', distance: '٣.٨ كم' }
         ]
       },
       {
         id: 3,
-        name: 'سفاري الصحراء',
-        location: 'صحراء دبي',
-        image: desertSafari,
-        rating: 4.7,
-        reviews: 15600,
-        duration: '6-7 ساعات',
-        price: 'من 280 درهم',
-        category: 'مغامرة',
-        description: 'مغامرة صحراوية مثيرة مع التزلج على الكثبان والترفيه الثقافي',
-        aiTip: 'رحلات المساء توفر طقساً أبرد وغروب شمس مذهل. ارتدي ملابس مريحة وأحذية مغلقة. لا تتناول وجبات ثقيلة قبل التزلج على الكثبان.',
-        amenities: ['التزلج على الكثبان', 'ركوب الجمال', 'عشاء شواء', 'عروض تقليدية'],
+        name: 'قرية حتا التراثية',
+        location: 'حتا، دبي',
+        image: hattaHeritage,
+        rating: 4.6,
+        reviews: 3120,
+        duration: '٢-٣ ساعات',
+        price: '٥ دراهم',
+        category: 'قرية تراثية',
+        description: 'قرية جبلية مرممة تعرض الحياة الإماراتية التقليدية من قرون مضت. استكشف البيوت القديمة والأبراج الدفاعية وتعلم عن نظام الفلج للري.',
+        aiTip: 'يمكن الجمع مع زيارة سد حتا ليوم كامل. أحضر الماء حيث المناخ الجبلي قد يكون دافئاً. عروض الحرف التقليدية في عطلة نهاية الأسبوع.',
+        amenities: ['متحف', 'بيوت تقليدية', 'قلعة', 'موقف سيارات', 'مركز زوار'],
         nearbyRestaurants: [
-          { name: 'مطعم المخيم الصحراوي', cuisine: 'شواء', distance: '0 كم' },
-          { name: 'خيمة البدو للطعام', cuisine: 'عربي', distance: '0 كم' }
+          { name: 'مطعم فندق حتا فورت', cuisine: 'عالمي', distance: '٢ كم' },
+          { name: 'دماني لودج', cuisine: 'مقهى', distance: '١.٥ كم' }
         ]
       },
       {
         id: 4,
-        name: 'برج العرب',
-        location: 'شاطئ جميرا',
-        image: burjAlArab,
-        rating: 4.6,
-        reviews: 6800,
-        duration: '2-4 ساعات',
-        price: 'من 500 درهم',
-        category: 'فندق فاخر',
-        description: 'فندق فاخر أيقوني على شكل شراع يرمز إلى ثراء دبي',
-        aiTip: 'مطلوب حجز لتناول الطعام للوصول إلى الفندق. شاي بعد الظهر في سكاي فيو بار يوفر إطلالات رائعة. جولات الهليكوبتر توفر أفضل صور خارجية.',
-        amenities: ['مطاعم فاخرة', 'خدمات السبا', 'وصول للشاطئ', 'مهبط هليكوبتر'],
+        name: 'حي الفهيدي التاريخي',
+        location: 'بر دبي',
+        image: alFahidi,
+        rating: 4.9,
+        reviews: 5640,
+        duration: '٣-٤ ساعات',
+        price: 'مجاني',
+        category: 'حي تاريخي',
+        description: 'أقدم حي سكني في دبي مع بيوت البراجيل المرممة والأزقة الضيقة والمعارض الفنية. جرب دبي القديمة الأصيلة بعيداً عن الأفق الحديث.',
+        aiTip: 'قم بالزيارة في المساء للطقس الأبرد والإضاءة الجوية. العديد من المتاحف والمعارض الصغيرة في الداخل. متحف القهوة العربية يجب زيارته.',
+        amenities: ['معارض فنية', 'متاحف', 'مقاهي تقليدية', 'جولات تراثية', 'محلات تذكارات'],
         nearbyRestaurants: [
-          { name: 'المحارة', cuisine: 'مأكولات بحرية', distance: '0 كم' },
-          { name: 'سكاي فيو بار', cuisine: 'عالمي', distance: '0 كم' }
+          { name: 'بيت الشاي العربي', cuisine: 'إماراتي', distance: '١٠٠ م' },
+          { name: 'مقهى XVA', cuisine: 'عضوي/نباتي', distance: '١٥٠ م' }
         ]
       }
     ]
