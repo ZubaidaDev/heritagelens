@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { MessageCircle, Send, X, Bot, User, Sparkles } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface AIChatbotProps {
   language: 'en' | 'ar';
@@ -20,6 +22,7 @@ export const AIChatbot = ({ language }: AIChatbotProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const { toast } = useToast();
 
   const text = {
     en: {
@@ -48,33 +51,6 @@ export const AIChatbot = ({ language }: AIChatbotProps) => {
     }
   };
 
-  const simulateAIResponse = (userMessage: string): string => {
-    const responses = {
-      en: {
-        default: "That's a great question! Based on my knowledge of UAE, I'd recommend checking out the local customs and planning your visit during the cooler months (November to March) for the best experience. Would you like specific recommendations for any particular emirate?",
-        weather: "The best time to visit UAE is from November to March when temperatures are pleasant (20-30°C). Avoid summer months (June-September) as it can get extremely hot (40-50°C). Winter is perfect for outdoor activities!",
-        culture: "UAE is a respectful and welcoming country. Dress modestly in public areas, especially at religious sites. Friday is the holy day. Tipping 10-15% is common. Arabic is official but English is widely spoken.",
-        food: "Must-try Emirati dishes include Al Harees, Machboos, Luqaimat, and Shawarma. Visit local markets like Gold Souk and spice markets. Don't miss traditional Arabic coffee and dates!"
-      },
-      ar: {
-        default: "سؤال ممتاز! بناءً على معرفتي بدولة الإمارات، أنصح بالتحقق من العادات المحلية والتخطيط لزيارتك خلال الأشهر الباردة (نوفمبر إلى مارس) للحصول على أفضل تجربة. هل تريد توصيات محددة لأي إمارة معينة؟",
-        weather: "أفضل وقت لزيارة الإمارات من نوفمبر إلى مارس عندما تكون درجات الحرارة لطيفة (20-30 درجة). تجنب أشهر الصيف (يونيو-سبتمبر) حيث يمكن أن تصبح حارة جداً (40-50 درجة). الشتاء مثالي للأنشطة الخارجية!",
-        culture: "الإمارات دولة محترمة ومرحبة. البس بتواضع في الأماكن العامة، خاصة في المواقع الدينية. الجمعة هو اليوم المقدس. الإكرامية 10-15% شائعة. العربية رسمية لكن الإنجليزية منتشرة.",
-        food: "الأطباق الإماراتية التي يجب تجربتها تشمل الهريس والمجبوس واللقيمات والشاورما. زيارة الأسواق المحلية مثل سوق الذهب وأسواق البهارات. لا تفوت القهوة العربية التقليدية والتمر!"
-      }
-    };
-
-    const message = userMessage.toLowerCase();
-    if (message.includes('weather') || message.includes('time') || message.includes('الطقس') || message.includes('وقت')) {
-      return responses[language].weather;
-    } else if (message.includes('culture') || message.includes('custom') || message.includes('الثقافة') || message.includes('العادات')) {
-      return responses[language].culture;
-    } else if (message.includes('food') || message.includes('eat') || message.includes('الطعام') || message.includes('أكل')) {
-      return responses[language].food;
-    }
-    return responses[language].default;
-  };
-
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
@@ -86,20 +62,65 @@ export const AIChatbot = ({ language }: AIChatbotProps) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const messageText = inputValue;
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response delay
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('chatbot', {
+        body: { message: messageText, language }
+      });
+
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
+
+      if (!data?.response) {
+        throw new Error('No response from AI');
+      }
+
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
         type: 'bot',
-        content: simulateAIResponse(inputValue),
+        content: data.response,
         timestamp: new Date()
       };
+      
       setMessages(prev => [...prev, botResponse]);
+    } catch (error: any) {
+      console.error('Chatbot error:', error);
+      
+      let errorMessage = language === 'ar' 
+        ? 'عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.'
+        : 'Sorry, an error occurred. Please try again.';
+      
+      if (error.message?.includes('rate limit') || error.message?.includes('429')) {
+        errorMessage = language === 'ar'
+          ? 'تم تجاوز الحد المسموح. يرجى المحاولة بعد قليل.'
+          : 'Rate limit exceeded. Please try again in a moment.';
+      } else if (error.message?.includes('payment') || error.message?.includes('402')) {
+        errorMessage = language === 'ar'
+          ? 'خدمة الذكاء الاصطناعي تتطلب الدفع. يرجى التواصل مع الدعم.'
+          : 'AI service requires payment. Please contact support.';
+      }
+      
+      toast({
+        title: language === 'ar' ? 'خطأ' : 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+      });
+      
+      const errorBotMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'bot',
+        content: errorMessage,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorBotMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
