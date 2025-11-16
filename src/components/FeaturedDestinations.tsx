@@ -10,9 +10,10 @@ import desertSafari from '@/assets/desert-safari.jpg';
 
 interface FeaturedDestinationsProps {
   language: 'en' | 'ar';
+  searchQuery?: string;
 }
 
-export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) => {
+export const FeaturedDestinations = ({ language, searchQuery = '' }: FeaturedDestinationsProps) => {
   const text = {
     en: {
       title: 'Featured Destinations',
@@ -321,6 +322,15 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
 
   const isRTL = language === 'ar';
 
+  // Filter destinations based on search query
+  const filteredDestinations = searchQuery
+    ? destinations[language].filter(dest =>
+        dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        dest.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        dest.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : destinations[language];
+
   return (
     <section id="destinations" className={`py-20 bg-background ${isRTL ? 'rtl' : ''}`}>
       <div className="container mx-auto px-6">
@@ -329,21 +339,35 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
             {text[language].title}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {text[language].subtitle}
+            {searchQuery 
+              ? `${filteredDestinations.length} ${language === 'en' ? 'results for' : 'نتيجة لـ'} "${searchQuery}"`
+              : text[language].subtitle
+            }
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {destinations[language].map((destination, index) => (
-            <div
-              key={destination.id}
-              className="animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <DestinationCard destination={destination} language={language} />
-            </div>
-          ))}
-        </div>
+        {filteredDestinations.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {filteredDestinations.map((destination, index) => (
+              <div
+                key={destination.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <DestinationCard destination={destination} language={language} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-xl text-muted-foreground">
+              {language === 'en' 
+                ? `No destinations found for "${searchQuery}"` 
+                : `لم يتم العثور على وجهات لـ "${searchQuery}"`
+              }
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );

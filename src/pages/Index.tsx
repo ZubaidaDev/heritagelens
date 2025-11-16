@@ -7,6 +7,7 @@ import { AIChatbot } from '@/components/AIChatbot';
 
 const Index = () => {
   const [language, setLanguage] = useState<'en' | 'ar'>('en');
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <div className="min-h-screen bg-background">
@@ -17,9 +18,15 @@ const Index = () => {
       
       <HeroSection language={language} />
       
-      <SearchSection language={language} />
+      <SearchSection 
+        language={language}
+        onSearch={setSearchQuery}
+      />
       
-      <FeaturedDestinations language={language} />
+      <FeaturedDestinations 
+        language={language}
+        searchQuery={searchQuery}
+      />
       
       <AIChatbot language={language} />
     </div>
