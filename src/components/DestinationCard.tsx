@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Star, MapPin, Clock, DollarSign, Info, Users, Utensils } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Destination {
   id: number;
@@ -32,7 +33,54 @@ interface DestinationCardProps {
 
 export const DestinationCard = ({ destination, language }: DestinationCardProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [realRating, setRealRating] = useState<number>(0);
+  const [realReviewCount, setRealReviewCount] = useState<number>(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchReviewStats();
+
+    // Set up realtime subscription for reviews
+    const channel = supabase
+      .channel('reviews-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'reviews'
+        },
+        () => {
+          fetchReviewStats();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [destination.name]);
+
+  const fetchReviewStats = async () => {
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('rating')
+      .eq('destination', destination.name);
+
+    if (!error && data) {
+      setRealReviewCount(data.length);
+      if (data.length > 0) {
+        const avgRating = data.reduce((sum, review) => sum + review.rating, 0) / data.length;
+        setRealRating(Math.round(avgRating * 10) / 10); // Round to 1 decimal
+      } else {
+        setRealRating(0);
+      }
+    }
+  };
+
+  const handleReviewClick = () => {
+    navigate('/reviews');
+  };
 
   const text = {
     en: {
@@ -41,7 +89,9 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
       getDirections: 'Get Directions',
       aiTips: 'Know before you go',
       amenities: 'Amenities',
-      nearbyDining: 'Nearby Dining'
+      nearbyDining: 'Nearby Dining',
+      noRating: 'No rating',
+      beFirstReview: 'Be the first to review'
     },
     ar: {
       reviews: 'تقييم',
@@ -49,7 +99,9 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
       getDirections: 'احصل على الاتجاهات',
       aiTips: 'اعرف قبل أن تذهب',
       amenities: 'المرافق',
-      nearbyDining: 'المطاعم القريبة'
+      nearbyDining: 'المطاعم القريبة',
+      noRating: 'لا يوجد تقييم',
+      beFirstReview: 'كن أول من يقيم'
     }
   };
 
@@ -127,13 +179,19 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
           </div>
 
           {/* Rating */}
-          <div className="flex items-center space-x-2">
+          <div 
+            className="flex items-center space-x-2 cursor-pointer hover:opacity-75 transition-opacity"
+            onClick={handleReviewClick}
+            title="Click to view reviews"
+          >
             <div className="flex items-center space-x-1">
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span className="font-semibold">{destination.rating}</span>
+              <span className="font-semibold">
+                {realReviewCount > 0 ? realRating : text[language].noRating}
+              </span>
             </div>
             <span className="text-sm text-muted-foreground">
-              ({destination.reviews.toLocaleString()} {text[language].reviews})
+              ({realReviewCount > 0 ? `${realReviewCount.toLocaleString()} ${text[language].reviews}` : text[language].beFirstReview})
             </span>
           </div>
         </div>
