@@ -56,6 +56,12 @@ export const HeroSection = ({ language }: HeroSectionProps) => {
           <Button 
             size="lg" 
             className="btn-hero group animate-bounce-gentle"
+            onClick={() => {
+              document.getElementById('destinations')?.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }}
           >
             {text[language].cta}
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
