@@ -28,7 +28,7 @@ export const SearchSection = ({ language }: SearchSectionProps) => {
   const isRTL = language === 'ar';
 
   return (
-    <section className={`py-20 bg-gradient-to-b from-background to-muted/30 ${isRTL ? 'rtl' : ''}`}>
+    <section id="search" className={`py-20 bg-gradient-to-b from-background to-muted/30 ${isRTL ? 'rtl' : ''}`}>
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-8 gradient-text">

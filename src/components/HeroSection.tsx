@@ -57,7 +57,7 @@ export const HeroSection = ({ language }: HeroSectionProps) => {
             size="lg" 
             className="btn-hero group animate-bounce-gentle"
             onClick={() => {
-              document.getElementById('destinations')?.scrollIntoView({ 
+              document.getElementById('search')?.scrollIntoView({ 
                 behavior: 'smooth',
                 block: 'start'
               });
