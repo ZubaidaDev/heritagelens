@@ -12,11 +12,11 @@ export const FeaturedDestinations = ({ language }: FeaturedDestinationsProps) =>
   const text = {
     en: {
       title: 'Featured Destinations',
-      subtitle: 'Discover the most popular attractions in UAE'
+      subtitle: 'Discover cultural attractions in UAE'
     },
     ar: {
       title: 'الوجهات المميزة',
-      subtitle: 'اكتشف المعالم السياحية الأكثر شعبية في دولة الإمارات'
+      subtitle: 'اكتشف المعالم الثقافية في دولة الإمارات'
     }
   };
 
