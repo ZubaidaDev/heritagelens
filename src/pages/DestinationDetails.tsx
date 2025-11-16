@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft, Clock, DollarSign, MapPin, Star, Info, Users, Calendar, Shield, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { Session } from '@supabase/supabase-js';
+import { DESTINATION_NAMES } from '@/data/destinations';
 
 interface DestinationDetails {
   openingHours: string;
@@ -35,6 +36,12 @@ interface Review {
   };
 }
 
+interface AIRecommendation {
+  destination: string;
+  reason: string;
+  confidence: number;
+}
+
 const DestinationDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +56,8 @@ const DestinationDetails = () => {
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [aiRecommendations, setAiRecommendations] = useState<AIRecommendation[]>([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
 
   useEffect(() => {
     if (!destination) {
@@ -149,6 +158,33 @@ const DestinationDetails = () => {
       supabase.removeChannel(channel);
     };
   }, [destination, toast]);
+
+  // Fetch AI recommendations for logged-in users
+  useEffect(() => {
+    if (!session?.user || !destination) return;
+
+    const fetchAIRecommendations = async () => {
+      setLoadingRecommendations(true);
+      try {
+        const { data, error } = await supabase.functions.invoke('ai-recommendations', {
+          body: {
+            userId: session.user.id,
+            currentDestination: destination.name,
+            allDestinations: Array.from(DESTINATION_NAMES)
+          }
+        });
+
+        if (error) throw error;
+        setAiRecommendations(data?.recommendations || []);
+      } catch (error) {
+        console.error('Error fetching AI recommendations:', error);
+      } finally {
+        setLoadingRecommendations(false);
+      }
+    };
+
+    fetchAIRecommendations();
+  }, [session, destination]);
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -381,6 +417,59 @@ const DestinationDetails = () => {
             </Button>
           </div>
         </div>
+
+        {/* AI-Powered Recommendations for Logged-In Users */}
+        {session && aiRecommendations.length > 0 && (
+          <div className="max-w-5xl mx-auto mb-16">
+            <Card className="p-8 bg-gradient-to-br from-accent/5 to-primary/5 border-accent/20">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Info className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-display font-semibold">AI-Powered Recommendations</h2>
+                  <p className="text-sm text-muted-foreground">Based on your travel history and preferences</p>
+                </div>
+              </div>
+              
+              {loadingRecommendations ? (
+                <div className="space-y-4">
+                  {[1, 2, 3].map(i => (
+                    <Skeleton key={i} className="h-24 w-full" />
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {aiRecommendations.map((rec, index) => (
+                    <Card 
+                      key={index} 
+                      className="p-5 hover:shadow-md transition-shadow cursor-pointer bg-card"
+                      onClick={() => {
+                        // Find destination and navigate
+                        const destData = {
+                          name: rec.destination,
+                          location: 'UAE',
+                          category: 'Heritage Site'
+                        };
+                        navigate('/destination-details', { state: { destination: destData } });
+                      }}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-1 text-primary">{rec.destination}</h3>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{rec.reason}</p>
+                        </div>
+                        <Badge variant="secondary" className="shrink-0">
+                          {Math.round(rec.confidence * 100)}% match
+                        </Badge>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </Card>
+          </div>
+        )}
 
         {/* Reviews Section */}
         <div className="mt-12">
