@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,7 @@ interface DestinationCardProps {
 
 export const DestinationCard = ({ destination, language }: DestinationCardProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const navigate = useNavigate();
 
   const text = {
     en: {
@@ -57,7 +59,7 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
   };
 
   const handleViewDetails = () => {
-    window.location.href = `/destination/${destination.id}`;
+    navigate(`/destination/${destination.id}`, { state: { destination } });
   };
 
   return (
