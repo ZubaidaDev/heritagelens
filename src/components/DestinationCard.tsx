@@ -36,6 +36,7 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
     en: {
       reviews: 'reviews',
       viewDetails: 'View Details',
+      getDirections: 'Get Directions',
       aiTips: 'AI Tips',
       amenities: 'Amenities',
       nearbyDining: 'Nearby Dining'
@@ -43,10 +44,16 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
     ar: {
       reviews: 'تقييم',
       viewDetails: 'عرض التفاصيل',
+      getDirections: 'احصل على الاتجاهات',
       aiTips: 'نصائح الذكاء الاصطناعي',
       amenities: 'المرافق',
       nearbyDining: 'المطاعم القريبة'
     }
+  };
+
+  const handleGetDirections = () => {
+    const query = encodeURIComponent(`${destination.name}, ${destination.location}`);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
   };
 
   return (
@@ -166,10 +173,16 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
           </div>
         </div>
 
-        {/* Action Button */}
-        <Button className="w-full btn-hero mt-4">
-          {text[language].viewDetails}
-        </Button>
+        {/* Action Buttons */}
+        <div className="flex gap-2 mt-4">
+          <Button className="flex-1 btn-hero" onClick={handleGetDirections}>
+            <MapPin className="w-4 h-4 mr-2" />
+            {text[language].getDirections}
+          </Button>
+          <Button className="flex-1" variant="outline">
+            {text[language].viewDetails}
+          </Button>
+        </div>
       </div>
     </Card>
   );
