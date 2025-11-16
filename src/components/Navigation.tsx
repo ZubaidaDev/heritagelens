@@ -43,7 +43,7 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
     en: {
       brand: 'HeritageLens',
       home: 'Home',
-      destinations: 'Destinations',
+      destinations: 'Recommendations',
       reviews: 'Reviews',
       journal: 'Journals',
       login: 'Login',
@@ -52,7 +52,7 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
     ar: {
       brand: 'عدسة التراث',
       home: 'الرئيسية',
-      destinations: 'الوجهات',
+      destinations: 'التوصيات',
       reviews: 'التقييمات',
       journal: 'اليوميات',
       login: 'تسجيل الدخول',
