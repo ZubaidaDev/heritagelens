@@ -428,7 +428,7 @@ const DestinationDetails = () => {
                   <Info className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-display font-semibold">AI-Powered Recommendations</h2>
+                  <h2 className="text-2xl font-display font-semibold">Recommendations</h2>
                   <p className="text-sm text-muted-foreground">Based on your travel history and preferences</p>
                 </div>
               </div>

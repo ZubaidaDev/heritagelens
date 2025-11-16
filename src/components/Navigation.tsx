@@ -63,7 +63,7 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
   return (
     <nav className={`fixed top-0 w-full z-50 glass-effect border-b border-border/50 ${isRTL ? 'rtl' : ''}`}>
       <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-center space-y-4">
           {/* Brand */}
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-hero flex items-center justify-center">
@@ -74,61 +74,64 @@ export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
             </span>
           </div>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-foreground hover:text-primary transition-colors font-medium">
-              {text[language].home}
-            </a>
-            {session && (
-              <a href="#destinations" className="text-foreground hover:text-primary transition-colors font-medium">
-                {text[language].destinations}
+          {/* Navigation Row */}
+          <div className="flex items-center justify-center gap-8 w-full flex-wrap">
+            {/* Navigation Links */}
+            <div className="flex items-center space-x-8">
+              <a href="/" className="text-foreground hover:text-primary transition-colors font-medium">
+                {text[language].home}
               </a>
-            )}
-            <a href="/reviews" className="text-foreground hover:text-primary transition-colors font-medium">
-              {text[language].reviews}
-            </a>
-            <a href="/journal" className="text-foreground hover:text-primary transition-colors font-medium">
-              {text[language].journal}
-            </a>
-          </div>
-
-          {/* Right Side */}
-          <div className="flex items-center space-x-4">
-            {/* Language Switcher */}
-            <div className="lang-switcher">
-              <button
-                onClick={() => onLanguageChange('en')}
-                className={`lang-option ${language === 'en' ? 'active' : ''}`}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => onLanguageChange('ar')}
-                className={`lang-option ${language === 'ar' ? 'active' : ''}`}
-              >
-                العربية
-              </button>
+              {session && (
+                <a href="#destinations" className="text-foreground hover:text-primary transition-colors font-medium">
+                  {text[language].destinations}
+                </a>
+              )}
+              <a href="/reviews" className="text-foreground hover:text-primary transition-colors font-medium">
+                {text[language].reviews}
+              </a>
+              <a href="/journal" className="text-foreground hover:text-primary transition-colors font-medium">
+                {text[language].journal}
+              </a>
             </div>
 
-            {session ? (
-              <Button
-                onClick={handleLogout}
-                variant="outline"
-                className="flex items-center space-x-2"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>{text[language].logout}</span>
-              </Button>
-            ) : (
-              <Button
-                onClick={() => navigate('/auth')}
-                variant="outline"
-                className="flex items-center space-x-2"
-              >
-                <User className="w-4 h-4" />
-                <span>{text[language].login}</span>
-              </Button>
-            )}
+            {/* Right Side - Language and Auth */}
+            <div className="flex items-center space-x-4">
+              {/* Language Switcher */}
+              <div className="lang-switcher">
+                <button
+                  onClick={() => onLanguageChange('en')}
+                  className={`lang-option ${language === 'en' ? 'active' : ''}`}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => onLanguageChange('ar')}
+                  className={`lang-option ${language === 'ar' ? 'active' : ''}`}
+                >
+                  العربية
+                </button>
+              </div>
+
+              {session ? (
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  className="flex items-center space-x-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>{text[language].logout}</span>
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate('/auth')}
+                  variant="outline"
+                  className="flex items-center space-x-2"
+                >
+                  <User className="w-4 h-4" />
+                  <span>{text[language].login}</span>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
