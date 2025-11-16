@@ -14,6 +14,7 @@ import { Session } from '@supabase/supabase-js';
 const emailSchema = z.string().trim().email('Invalid email address').max(255, 'Email must be less than 255 characters');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters').max(100, 'Password must be less than 100 characters');
 const nameSchema = z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters');
+const usernameSchema = z.string().trim().min(3, 'Username must be at least 3 characters').max(30, 'Username must be less than 30 characters').regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores');
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -22,7 +23,8 @@ export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string; fullName?: string }>({});
+  const [username, setUsername] = useState('');
+  const [errors, setErrors] = useState<{ email?: string; password?: string; fullName?: string; username?: string }>({});
 
   useEffect(() => {
     // Set up auth state listener
@@ -68,7 +70,7 @@ export default function Auth() {
   };
 
   const validateSignup = () => {
-    const newErrors: { email?: string; password?: string; fullName?: string } = {};
+    const newErrors: { email?: string; password?: string; fullName?: string; username?: string } = {};
     
     try {
       emailSchema.parse(email);
@@ -91,6 +93,14 @@ export default function Auth() {
     } catch (err) {
       if (err instanceof z.ZodError) {
         newErrors.fullName = err.errors[0].message;
+      }
+    }
+    
+    try {
+      usernameSchema.parse(username);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        newErrors.username = err.errors[0].message;
       }
     }
     
@@ -249,6 +259,26 @@ export default function Auth() {
                   />
                 </div>
                 {errors.fullName && <p className="text-sm text-destructive">{errors.fullName}</p>}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="signup-username">Username</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="signup-username"
+                    type="text"
+                    placeholder="johndoe"
+                    value={username}
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                      setErrors({ ...errors, username: undefined });
+                    }}
+                    className="pl-10"
+                    disabled={loading}
+                  />
+                </div>
+                {errors.username && <p className="text-sm text-destructive">{errors.username}</p>}
               </div>
 
               <div className="space-y-2">

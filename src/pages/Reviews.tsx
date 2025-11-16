@@ -20,6 +20,10 @@ interface Review {
   comment: string;
   visit_date: string | null;
   created_at: string;
+  user_id: string;
+  profiles?: {
+    username: string;
+  };
 }
 
 export default function Reviews() {
@@ -56,7 +60,10 @@ export default function Reviews() {
     try {
       const { data, error } = await supabase
         .from('reviews')
-        .select('*')
+        .select(`
+          *,
+          profiles(username)
+        `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -250,10 +257,15 @@ export default function Reviews() {
                       </div>
                     )}
                   </div>
-                  <p className="text-foreground">{review.comment}</p>
-                  <p className="text-xs text-muted-foreground mt-3">
-                    {format(new Date(review.created_at), 'MMM d, yyyy')}
-                  </p>
+                   <p className="text-foreground">{review.comment}</p>
+                   <div className="flex items-center justify-between mt-3">
+                     <p className="text-sm text-muted-foreground">
+                       By {review.profiles?.username || 'Anonymous'}
+                     </p>
+                     <p className="text-xs text-muted-foreground">
+                       {format(new Date(review.created_at), 'MMM d, yyyy')}
+                     </p>
+                   </div>
                 </CardContent>
               </Card>
             ))

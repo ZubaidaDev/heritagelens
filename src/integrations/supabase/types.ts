@@ -48,6 +48,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          is_public: boolean
           location: string | null
           title: string
           updated_at: string
@@ -58,6 +59,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          is_public?: boolean
           location?: string | null
           title: string
           updated_at?: string
@@ -68,11 +70,38 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          is_public?: boolean
           location?: string | null
           title?: string
           updated_at?: string
           user_id?: string
           visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          username?: string
         }
         Relationships: []
       }
@@ -107,7 +136,15 @@ export type Database = {
           user_id?: string
           visit_date?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "reviews_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
