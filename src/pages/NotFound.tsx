@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Footer } from '@/components/Footer';
+import { AIChatbot } from '@/components/AIChatbot';
 
 const NotFound = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const NotFound = () => {
           </a>
         </div>
       </div>
+      <AIChatbot language="en" />
       <Footer />
     </div>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
+import { AIChatbot } from '@/components/AIChatbot';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -48,6 +49,7 @@ const DestinationDetails = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const destination = location.state?.destination;
+  const [language, setLanguage] = useState<'en' | 'ar'>('en');
   const [details, setDetails] = useState<DestinationDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [realRating, setRealRating] = useState<number>(0);
@@ -232,7 +234,7 @@ const DestinationDetails = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation language="en" onLanguageChange={() => {}} />
+      <Navigation language={language} onLanguageChange={setLanguage} />
       
       <div className="container mx-auto px-4 py-8">
         <Button 
@@ -566,6 +568,7 @@ const DestinationDetails = () => {
         </div>
       </div>
       
+      <AIChatbot language={language} />
       <Footer />
     </div>
   );
