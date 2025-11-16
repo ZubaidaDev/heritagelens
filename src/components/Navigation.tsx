@@ -1,14 +1,43 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Globe, MapPin, User } from 'lucide-react';
+import { MapPin, User, LogOut } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Session } from '@supabase/supabase-js';
+import { toast } from 'sonner';
 
 interface NavigationProps {
-  onLoginClick: () => void;
   language: 'en' | 'ar';
   onLanguageChange: (lang: 'en' | 'ar') => void;
 }
 
-export const Navigation = ({ onLoginClick, language, onLanguageChange }: NavigationProps) => {
+export const Navigation = ({ language, onLanguageChange }: NavigationProps) => {
+  const navigate = useNavigate();
+  const [session, setSession] = useState<Session | null>(null);
   const isRTL = language === 'ar';
+  
+  useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+    });
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error('Failed to logout');
+    } else {
+      toast.success('Logged out successfully');
+    }
+  };
   
   const text = {
     en: {
@@ -16,14 +45,16 @@ export const Navigation = ({ onLoginClick, language, onLanguageChange }: Navigat
       destinations: 'Destinations',
       experiences: 'Experiences', 
       reviews: 'Reviews',
-      login: 'Login'
+      login: 'Login',
+      logout: 'Logout'
     },
     ar: {
       brand: 'عدسة التراث',
       destinations: 'الوجهات',
       experiences: 'التجارب',
       reviews: 'التقييمات', 
-      login: 'تسجيل الدخول'
+      login: 'تسجيل الدخول',
+      logout: 'تسجيل الخروج'
     }
   };
 
@@ -72,14 +103,25 @@ export const Navigation = ({ onLoginClick, language, onLanguageChange }: Navigat
               </button>
             </div>
 
-            <Button
-              onClick={onLoginClick}
-              variant="outline"
-              className="flex items-center space-x-2"
-            >
-              <User className="w-4 h-4" />
-              <span>{text[language].login}</span>
-            </Button>
+            {session ? (
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="flex items-center space-x-2"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>{text[language].logout}</span>
+              </Button>
+            ) : (
+              <Button
+                onClick={() => navigate('/auth')}
+                variant="outline"
+                className="flex items-center space-x-2"
+              >
+                <User className="w-4 h-4" />
+                <span>{text[language].login}</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
