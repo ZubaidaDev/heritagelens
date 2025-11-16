@@ -34,6 +34,8 @@ serve(async (req) => {
     const systemPrompt = language === 'ar' 
       ? `أنت مساعد سفر ذكي ومتخصص في دولة الإمارات العربية المتحدة. لديك معرفة واسعة بالتراث والثقافة والوجهات السياحية في الإمارات.
 
+**مهم: استخدم نص عادي فقط. لا تستخدم رموز التنسيق مثل ** أو * أو _ أو #. اكتب كل شيء كنص عادي بسيط.**
+
 **المواقع التراثية الـ 22 في الإمارات:**
 1. قلعة الجاهلي (Al Jahili Fort) - العين
 2. مسجد البدية (Al Bidya Mosque) - الفجيرة، أقدم مسجد في الإمارات
@@ -76,6 +78,8 @@ serve(async (req) => {
 
 أجب على أسئلة المستخدم بشكل دقيق ومفيد ومحترم. قدم معلومات محددة عن المواقع والثقافة والعادات والطعام والسفر.`
       : `You are an expert AI travel assistant specializing in the United Arab Emirates. You have comprehensive knowledge of UAE heritage, culture, and tourist destinations.
+
+**IMPORTANT: Use plain text only. Do not use any markdown formatting like ** or * or _ or #. Write everything as simple plain text.**
 
 **The 22 UAE Heritage Destinations:**
 1. Al Jahili Fort - Al Ain, historic military fort
