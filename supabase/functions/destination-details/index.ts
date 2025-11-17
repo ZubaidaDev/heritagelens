@@ -37,16 +37,16 @@ serve(async (req) => {
       );
     }
 
-    if (category && !['Heritage', 'Cultural', 'Archaeological', 'Historical', 'Nature', 'Modern'].includes(category)) {
+    if (description && (typeof description !== 'string' || description.length > 1000)) {
       return new Response(
-        JSON.stringify({ error: 'Invalid category. Must be Heritage, Cultural, Archaeological, Historical, Nature, or Modern' }),
+        JSON.stringify({ error: 'Invalid description format or too long (max 1000 characters)' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    if (description && (typeof description !== 'string' || description.length > 1000)) {
+    if (category && (typeof category !== 'string' || category.length > 100)) {
       return new Response(
-        JSON.stringify({ error: 'Invalid description format or too long (max 1000 characters)' }),
+        JSON.stringify({ error: 'Invalid category format or too long (max 100 characters)' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
