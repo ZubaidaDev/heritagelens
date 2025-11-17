@@ -12,7 +12,44 @@ serve(async (req) => {
   }
 
   try {
-    const { destinationName, location, category, description } = await req.json();
+    const requestBody = await req.json();
+    const { destinationName, location, category, description } = requestBody;
+
+    // Input validation
+    if (!destinationName || typeof destinationName !== 'string' || destinationName.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Valid destination name is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (destinationName.length > 100) {
+      return new Response(
+        JSON.stringify({ error: 'Destination name too long. Maximum 100 characters.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (location && (typeof location !== 'string' || location.length > 100)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid location format or too long (max 100 characters)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (category && !['Heritage', 'Cultural', 'Archaeological', 'Historical', 'Nature', 'Modern'].includes(category)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid category. Must be Heritage, Cultural, Archaeological, Historical, Nature, or Modern' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (description && (typeof description !== 'string' || description.length > 1000)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid description format or too long (max 1000 characters)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
