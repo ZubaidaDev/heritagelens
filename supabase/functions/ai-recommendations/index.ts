@@ -16,7 +16,47 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { userId, currentDestination, allDestinations } = await req.json();
+    const requestBody = await req.json();
+    const { userId, currentDestination, allDestinations } = requestBody;
+
+    // Input validation
+    if (!userId || typeof userId !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'Valid user ID is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (currentDestination && (typeof currentDestination !== 'string' || currentDestination.length > 100)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid current destination format or too long (max 100 characters)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!Array.isArray(allDestinations)) {
+      return new Response(
+        JSON.stringify({ error: 'All destinations must be an array' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate each destination in the array
+    for (const dest of allDestinations) {
+      if (typeof dest !== 'string' || dest.length > 100) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid destination in array (max 100 characters per destination)' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+
+    if (allDestinations.length > 100) {
+      return new Response(
+        JSON.stringify({ error: 'Too many destinations. Maximum 100 destinations allowed.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;

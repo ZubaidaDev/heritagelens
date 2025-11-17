@@ -203,12 +203,12 @@ export default function Journal() {
 
       uploadedUrls.push(publicUrl);
 
-      // Save photo URL to database
+      // Save photo path to database (not public URL)
       await supabase
         .from('journal_photos')
         .insert({
           journal_id: journalId,
-          photo_url: publicUrl,
+          photo_url: fileName, // Store path, not public URL
         });
     }
 
