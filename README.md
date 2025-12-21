@@ -1,8 +1,8 @@
-# Welcome to your Lovable project
+# HeritageLens 🇦🇪
 
-## Project info
+**Live Site:** https://heritagelens.lovable.app/
 
-**URL**: https://lovable.dev/projects/a917ad78-5e76-4049-ad51-f202a773641e
+An AI-powered travel platform helping visitors explore the rich cultural history and hidden gems of the UAE.
 
 ## How can I edit this code?
 
