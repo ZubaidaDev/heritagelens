@@ -116,9 +116,27 @@ export default function Journal() {
 
     if (error) {
       console.error('Error loading journals:', error);
-    } else {
-      setJournals(data || []);
+      return;
     }
+
+    // Resolve signed URLs for photos in the private bucket
+    const resolved = await Promise.all(
+      (data || []).map(async (journal: any) => {
+        if (!journal.journal_photos?.length) return journal;
+        const photos = await Promise.all(
+          journal.journal_photos.map(async (photo: any) => {
+            if (!photo.photo_url) return photo;
+            if (photo.photo_url.startsWith('http')) return photo;
+            const { data: signed } = await supabase.storage
+              .from('journal-photos')
+              .createSignedUrl(photo.photo_url, 3600);
+            return { ...photo, photo_url: signed?.signedUrl || photo.photo_url };
+          })
+        );
+        return { ...journal, journal_photos: photos };
+      })
+    );
+    setJournals(resolved);
   };
 
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -310,19 +328,14 @@ export default function Journal() {
                   </p>
                   {journal.journal_photos && journal.journal_photos.length > 0 && (
                     <div className="flex gap-1 mt-2">
-                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => {
-                        const photoUrl = photo.photo_url.startsWith('http') 
-                          ? photo.photo_url 
-                          : `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/journal-photos/${photo.photo_url}`;
-                        return (
-                          <img
-                            key={idx}
-                            src={photoUrl}
-                            alt="Journal"
-                            className="w-12 h-12 object-cover rounded"
-                          />
-                        );
-                      })}
+                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
+                        <img
+                          key={idx}
+                          src={photo.photo_url}
+                          alt="Journal"
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      ))}
                       {journal.journal_photos.length > 3 && (
                         <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xs">
                           +{journal.journal_photos.length - 3}
@@ -535,19 +548,14 @@ export default function Journal() {
                   </p>
                   {journal.journal_photos && journal.journal_photos.length > 0 && (
                     <div className="flex gap-1 mt-2">
-                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => {
-                        const photoUrl = photo.photo_url.startsWith('http') 
-                          ? photo.photo_url 
-                          : `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/journal-photos/${photo.photo_url}`;
-                        return (
-                          <img
-                            key={idx}
-                            src={photoUrl}
-                            alt="Journal"
-                            className="w-12 h-12 object-cover rounded"
-                          />
-                        );
-                      })}
+                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
+                        <img
+                          key={idx}
+                          src={photo.photo_url}
+                          alt="Journal"
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      ))}
                       {journal.journal_photos.length > 3 && (
                         <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xs">
                           +{journal.journal_photos.length - 3}
