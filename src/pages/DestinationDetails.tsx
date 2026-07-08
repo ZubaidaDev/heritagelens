@@ -112,25 +112,21 @@ const DestinationDetails = () => {
 
     const fetchReviews = async () => {
       const { data, error } = await supabase
-        .from('reviews')
-        .select(`
-          id,
-          rating,
-          comment,
-          visit_date,
-          created_at,
-          profiles (
-            username
-          )
-        `)
-        .eq('destination', destination.name)
-        .order('created_at', { ascending: false });
+        .rpc('get_reviews_with_username', { _destination: destination.name });
 
       if (!error && data) {
-        setReviews(data as Review[]);
-        setRealReviewCount(data.length);
-        if (data.length > 0) {
-          const avgRating = data.reduce((sum, review) => sum + review.rating, 0) / data.length;
+        const mapped: Review[] = (data as any[]).map((r) => ({
+          id: r.id,
+          rating: r.rating,
+          comment: r.comment,
+          visit_date: r.visit_date,
+          created_at: r.created_at,
+          profiles: { username: r.username },
+        }));
+        setReviews(mapped);
+        setRealReviewCount(mapped.length);
+        if (mapped.length > 0) {
+          const avgRating = mapped.reduce((sum, review) => sum + review.rating, 0) / mapped.length;
           setRealRating(Math.round(avgRating * 10) / 10);
         } else {
           setRealRating(0);

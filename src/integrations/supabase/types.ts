@@ -151,7 +151,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_reviews_with_username: {
+        Args: { _destination?: string }
+        Returns: {
+          comment: string
+          created_at: string
+          destination: string
+          id: string
+          rating: number
+          updated_at: string
+          username: string
+          visit_date: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

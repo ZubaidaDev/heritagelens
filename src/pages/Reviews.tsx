@@ -65,15 +65,20 @@ export default function Reviews() {
   const loadReviews = async () => {
     try {
       const { data, error } = await supabase
-        .from('reviews')
-        .select(`
-          *,
-          profiles(username)
-        `)
-        .order('created_at', { ascending: false });
+        .rpc('get_reviews_with_username', { _destination: null });
 
       if (error) throw error;
-      setReviews(data || []);
+      const mapped = (data || []).map((r: any) => ({
+        id: r.id,
+        rating: r.rating,
+        comment: r.comment,
+        destination: r.destination,
+        visit_date: r.visit_date,
+        created_at: r.created_at,
+        user_id: '',
+        profiles: { username: r.username },
+      }));
+      setReviews(mapped);
     } catch (error) {
       console.error('Error loading reviews:', error);
       toast.error('Failed to load reviews');
