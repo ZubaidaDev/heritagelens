@@ -43,7 +43,7 @@ export const DestinationCard = ({ destination, language }: DestinationCardProps)
 
     // Set up realtime subscription for reviews
     const channel = supabase
-      .channel('reviews-changes')
+      .channel(`reviews-changes-${destination.id}`)
       .on(
         'postgres_changes',
         {
