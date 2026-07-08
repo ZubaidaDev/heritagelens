@@ -548,19 +548,14 @@ export default function Journal() {
                   </p>
                   {journal.journal_photos && journal.journal_photos.length > 0 && (
                     <div className="flex gap-1 mt-2">
-                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => {
-                        const photoUrl = photo.photo_url.startsWith('http') 
-                          ? photo.photo_url 
-                          : `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/journal-photos/${photo.photo_url}`;
-                        return (
-                          <img
-                            key={idx}
-                            src={photoUrl}
-                            alt="Journal"
-                            className="w-12 h-12 object-cover rounded"
-                          />
-                        );
-                      })}
+                      {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
+                        <img
+                          key={idx}
+                          src={photo.photo_url}
+                          alt="Journal"
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      ))}
                       {journal.journal_photos.length > 3 && (
                         <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xs">
                           +{journal.journal_photos.length - 3}
