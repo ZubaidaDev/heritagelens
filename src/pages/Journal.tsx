@@ -565,9 +565,20 @@ export default function Journal() {
                       {journal.location}
                     </p>
                   )}
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+                  <p className={`text-sm text-muted-foreground mb-2 whitespace-pre-wrap ${expanded.has(journal.id) ? '' : 'line-clamp-2'}`}>
                     {journal.content}
                   </p>
+                  {journal.content && journal.content.length > 160 && (
+                    <button
+                      type="button"
+                      onClick={() => toggleExpanded(journal.id)}
+                      className="text-xs text-primary hover:underline mb-2"
+                    >
+                      {expanded.has(journal.id)
+                        ? (language === 'en' ? 'View less' : 'عرض أقل')
+                        : (language === 'en' ? 'View more' : 'عرض المزيد')}
+                    </button>
+                  )}
                   {journal.journal_photos && journal.journal_photos.length > 0 && (
                     <div className="flex gap-1 mt-2">
                       {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
