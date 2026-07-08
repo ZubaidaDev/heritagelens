@@ -116,9 +116,27 @@ export default function Journal() {
 
     if (error) {
       console.error('Error loading journals:', error);
-    } else {
-      setJournals(data || []);
+      return;
     }
+
+    // Resolve signed URLs for photos in the private bucket
+    const resolved = await Promise.all(
+      (data || []).map(async (journal: any) => {
+        if (!journal.journal_photos?.length) return journal;
+        const photos = await Promise.all(
+          journal.journal_photos.map(async (photo: any) => {
+            if (!photo.photo_url) return photo;
+            if (photo.photo_url.startsWith('http')) return photo;
+            const { data: signed } = await supabase.storage
+              .from('journal-photos')
+              .createSignedUrl(photo.photo_url, 3600);
+            return { ...photo, photo_url: signed?.signedUrl || photo.photo_url };
+          })
+        );
+        return { ...journal, journal_photos: photos };
+      })
+    );
+    setJournals(resolved);
   };
 
   const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
