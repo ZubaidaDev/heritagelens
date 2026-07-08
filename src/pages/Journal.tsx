@@ -126,10 +126,13 @@ export default function Journal() {
         const photos = await Promise.all(
           journal.journal_photos.map(async (photo: any) => {
             if (!photo.photo_url) return photo;
-            if (photo.photo_url.startsWith('http')) return photo;
+            // Extract storage path from legacy full public URLs
+            const marker = '/journal-photos/';
+            const idx = photo.photo_url.indexOf(marker);
+            const path = idx >= 0 ? photo.photo_url.substring(idx + marker.length) : photo.photo_url;
             const { data: signed } = await supabase.storage
               .from('journal-photos')
-              .createSignedUrl(photo.photo_url, 3600);
+              .createSignedUrl(path, 3600);
             return { ...photo, photo_url: signed?.signedUrl || photo.photo_url };
           })
         );
