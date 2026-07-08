@@ -37,6 +37,14 @@ export default function Journal() {
   const [journals, setJournals] = useState<any[]>([]);
   const [errors, setErrors] = useState<{ title?: string; content?: string; location?: string }>({});
   const [isPublic, setIsPublic] = useState(false);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const toggleExpanded = (id: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
 
   const text = {
     en: {
@@ -126,10 +134,13 @@ export default function Journal() {
         const photos = await Promise.all(
           journal.journal_photos.map(async (photo: any) => {
             if (!photo.photo_url) return photo;
-            if (photo.photo_url.startsWith('http')) return photo;
+            // Extract storage path from legacy full public URLs
+            const marker = '/journal-photos/';
+            const idx = photo.photo_url.indexOf(marker);
+            const path = idx >= 0 ? photo.photo_url.substring(idx + marker.length) : photo.photo_url;
             const { data: signed } = await supabase.storage
               .from('journal-photos')
-              .createSignedUrl(photo.photo_url, 3600);
+              .createSignedUrl(path, 3600);
             return { ...photo, photo_url: signed?.signedUrl || photo.photo_url };
           })
         );
@@ -323,9 +334,20 @@ export default function Journal() {
                       {journal.location}
                     </p>
                   )}
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+                  <p className={`text-sm text-muted-foreground mb-2 whitespace-pre-wrap ${expanded.has(journal.id) ? '' : 'line-clamp-2'}`}>
                     {journal.content}
                   </p>
+                  {journal.content && journal.content.length > 160 && (
+                    <button
+                      type="button"
+                      onClick={() => toggleExpanded(journal.id)}
+                      className="text-xs text-primary hover:underline mb-2"
+                    >
+                      {expanded.has(journal.id)
+                        ? (language === 'en' ? 'View less' : 'عرض أقل')
+                        : (language === 'en' ? 'View more' : 'عرض المزيد')}
+                    </button>
+                  )}
                   {journal.journal_photos && journal.journal_photos.length > 0 && (
                     <div className="flex gap-1 mt-2">
                       {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
@@ -543,9 +565,20 @@ export default function Journal() {
                       {journal.location}
                     </p>
                   )}
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+                  <p className={`text-sm text-muted-foreground mb-2 whitespace-pre-wrap ${expanded.has(journal.id) ? '' : 'line-clamp-2'}`}>
                     {journal.content}
                   </p>
+                  {journal.content && journal.content.length > 160 && (
+                    <button
+                      type="button"
+                      onClick={() => toggleExpanded(journal.id)}
+                      className="text-xs text-primary hover:underline mb-2"
+                    >
+                      {expanded.has(journal.id)
+                        ? (language === 'en' ? 'View less' : 'عرض أقل')
+                        : (language === 'en' ? 'View more' : 'عرض المزيد')}
+                    </button>
+                  )}
                   {journal.journal_photos && journal.journal_photos.length > 0 && (
                     <div className="flex gap-1 mt-2">
                       {journal.journal_photos.slice(0, 3).map((photo: any, idx: number) => (
