@@ -148,22 +148,22 @@ export type Database = {
       }
     }
     Views: {
-      reviews_public: {
-        Row: {
-          comment: string | null
-          created_at: string | null
-          destination: string | null
-          id: string | null
-          rating: number | null
-          updated_at: string | null
-          username: string | null
-          visit_date: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_reviews_with_username: {
+        Args: { _destination?: string }
+        Returns: {
+          comment: string
+          created_at: string
+          destination: string
+          id: string
+          rating: number
+          updated_at: string
+          username: string
+          visit_date: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
