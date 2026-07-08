@@ -148,7 +148,19 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      reviews_public: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          destination: string | null
+          id: string | null
+          rating: number | null
+          updated_at: string | null
+          username: string | null
+          visit_date: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
