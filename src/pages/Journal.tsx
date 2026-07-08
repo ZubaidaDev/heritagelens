@@ -37,6 +37,14 @@ export default function Journal() {
   const [journals, setJournals] = useState<any[]>([]);
   const [errors, setErrors] = useState<{ title?: string; content?: string; location?: string }>({});
   const [isPublic, setIsPublic] = useState(false);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const toggleExpanded = (id: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
 
   const text = {
     en: {
