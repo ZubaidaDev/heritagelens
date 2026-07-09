@@ -391,7 +391,7 @@ export default function Journal() {
   return (
     <>
       <Navigation language={language} onLanguageChange={setLanguage} />
-      <div className={`min-h-screen bg-gradient-to-b from-background to-muted/30 pt-24 pb-12 ${isRTL ? 'rtl' : ''}`}>
+      <div className={`min-h-screen bg-gradient-to-b from-background to-muted/30 pt-32 pb-12 ${isRTL ? 'rtl' : ''}`}>
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="mb-8">
           <h1 className="text-4xl font-bold gradient-text mb-2">{text[language].title}</h1>
