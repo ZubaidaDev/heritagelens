@@ -64,7 +64,7 @@ export default function Contact() {
     <div className="min-h-screen bg-background flex flex-col">
       <Navigation language={language} onLanguageChange={setLanguage} />
       
-      <div className="container mx-auto px-4 py-12 flex-1">
+      <div className="container mx-auto px-4 pt-32 pb-12 flex-1">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-4">Contact Us</h1>
